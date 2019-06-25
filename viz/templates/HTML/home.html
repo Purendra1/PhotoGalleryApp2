@@ -1,0 +1,72 @@
+{% load static %}
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<style type="text/css">
+.container {
+  position: relative;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px 0 30px 0;
+  margin: auto;
+  width: 50%;
+  align: center;
+  height: auto;
+   background: rgba(255,255,255,0.5);
+}
+.cd {
+  float: center;
+  width: 50%;
+  align: center;
+  margin: 0 auto;
+  margin-top: 6px;
+  height: auto;
+  padding: 10px;
+  position: relative;
+}
+body{background-image: url('{% static "IMG/background.jpg" %}');background-size: auto;}
+</style>
+<script>
+function showSignUp() { 
+	document.getElementById("SignIn").style.display="none"; 
+	document.getElementById("SignUp").style.display="block"; 
+}
+function showSignIn() { 
+	document.getElementById("SignIn").style.display="block"; 
+	document.getElementById("SignUp").style.display="none"; 
+}
+</script>
+<title>
+VIZ - your photo sharing companion
+</title>
+</head>
+<body>
+<div>
+<center><img src={% static "/IMG/title.png" %} alt="Title" align="middle|top"><br>
+<p ><h3 style="color:red">The Ultimate Photo Sharing Platform.</h3></p>
+<center>
+</div>
+<div class="container">
+<button onclick="showSignUp()" style="float:right;width: 100px; height: 50px;">Sign Up</button>
+<button onclick="showSignIn()" style="float:right;width: 100px; height: 50px;">Login</button>
+<br>
+<div class="cd" id="SignIn">
+<form method="POST"><center>
+<input style="margin-bottom: 10px;" type="username" name="username" placeholder="Username" required><br>
+<input style="margin-bottom: 10px;" type="password" name="password" placeholder="Password" required><br>
+<input style="margin-bottom: 10px;" type="submit" value="Login"></center>
+</form>
+</div>
+<div class="cd" id="SignUp" style="display:none;">
+<form method="POST" action="/PHP/AddUser.php"><center>
+<input style="margin-bottom: 10px;" type="username" name="username" placeholder="Username" required><br>
+<input style="margin-bottom: 10px;" type="email" name="email" placeholder="E-mail" required><br>
+<input style="margin-bottom: 10px;" type="password" name="password" placeholder="Password" required><br>
+<input style="margin-bottom: 10px;" type="text" name="fullname" placeholder="Full Name" required><br>
+<input style="margin-bottom: 10px;" type="submit" value="Sign Up"></center>
+</form>
+</div>
+<!--Hello
+<form action="/PHP/abc.php" method="POST"><button type="submit" name="submit" value="dasda" label="asdasdg" style="width: 100px; height: 30px;">yo</button></form>--git>
+</body>
+</html>
