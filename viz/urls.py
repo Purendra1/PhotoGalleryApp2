@@ -4,4 +4,5 @@ from . import views
 
 urlpatterns = [
     path('',views.home,name='viz-home'),
+    path('templates/',views.home)
 ]

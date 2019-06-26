@@ -68,6 +68,13 @@ TEMPLATES = [
     },
 ]
 
+TEMPLATE_DIRS = (
+    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    os.path.join(BASE_DIR, 'templates').replace('\\','/'),
+)
+
 WSGI_APPLICATION = 'PhotoGalleryApp.wsgi.application'
 
 
@@ -119,3 +126,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+TEMPLATE_URL = '/templates/'

@@ -47,26 +47,14 @@ VIZ - your photo sharing companion
 <center>
 </div>
 <div class="container">
-<button onclick="showSignUp()" style="float:right;width: 100px; height: 50px;">Sign Up</button>
-<button onclick="showSignIn()" style="float:right;width: 100px; height: 50px;">Login</button>
-<br>
-<div class="cd" id="SignIn">
-<form method="POST">{% csrf_token %}<center>
-<input style="margin-bottom: 10px;" type="username" name="username" placeholder="Username" required><br>
-<input style="margin-bottom: 10px;" type="password" name="password" placeholder="Password" required><br>
-<input style="margin-bottom: 10px;" type="submit" value="Login"></center>
-</form>
-</div>
-<div class="cd" id="SignUp" style="display:none;">
-<form method="POST">{% csrf_token %}<center>
-<input style="margin-bottom: 10px;" type="username" name="username" placeholder="Username" required><br>
-<input style="margin-bottom: 10px;" type="email" name="email" placeholder="E-mail" required><br>
-<input style="margin-bottom: 10px;" type="password" name="password" placeholder="Password" required><br>
-<input style="margin-bottom: 10px;" type="text" name="firstname" placeholder="First Name" required><br>
-<input style="margin-bottom: 10px;" type="text" name="lastname" placeholder="Last Name" required><br>
-<input style="margin-bottom: 10px;" type="submit" value="Sign Up"></center>
-</form>
-</div>
+{% if messages %}
+            {% for message in messages %}
+              <div>
+               <center> {{ message }} </center>
+              </div>
+            {% endfor %}
+{% endif %}
+{{ email }}
 </div>
 <!--Hello
 <form action="/PHP/abc.php" method="POST"><button type="submit" name="submit" value="dasda" label="asdasdg" style="width: 100px; height: 30px;">yo</button></form>-->
