@@ -42,7 +42,7 @@ VIZ - your photo sharing companion
 </head>
 <body>
 <div>
-<center><a href=""><img src={% static "/IMG/title.png" %}  alt="Title" align="middle|top"/></a><br>
+<center><a href="{% url 'viz-home' %}"><img src={% static "/IMG/title.png" %}  alt="Title" align="middle|top"/></a><br>
 <p ><h3 style="color:red">The Ultimate Photo Sharing Platform.</h3></p>
 <center>
 </div>
@@ -55,7 +55,6 @@ VIZ - your photo sharing companion
             {% endfor %}
 {% endif %}
 {{ email }}
-{{ form }}
 </div>
 <!--Hello
 <form action="/PHP/abc.php" method="POST"><button type="submit" name="submit" value="dasda" label="asdasdg" style="width: 100px; height: 30px;">yo</button></form>-->

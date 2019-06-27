@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-	'viz.apps.VizConfig',
+	'viz.apps.UsersConfig',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -128,3 +128,9 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 STATIC_URL = '/static/'
 TEMPLATE_URL = '/templates/'
+
+LOGIN_REDIRECT_URL = 'viz-profile'
+LOGIN_URL = 'viz-showSignIn'
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_URL = '/media/'

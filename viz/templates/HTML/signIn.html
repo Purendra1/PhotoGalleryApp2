@@ -1,66 +1,20 @@
+{% extends "HTML/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-<html>
-<head>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
-integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
-<style type="text/css">
-.container {
-  position: relative;
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 20px 0 30px 0;
-  margin: auto;
-  width: 50%;
-  align: center;
-  height: auto;
-   background: rgba(255,255,255,0.5);
-}
-.cd {
-  float: center;
-  width: 50%;
-  align: center;
-  margin: 0 auto;
-  margin-top: 6px;
-  height: auto;
-  padding: 10px;
-  position: relative;
-}
-body{background-image: url('{% static "IMG/background.jpg" %}');background-size: auto;}
-</style>
-<script>
-function showSignUp() { 
-	document.getElementById("SignIn").style.display="none"; 
-	document.getElementById("SignUp").style.display="block"; 
-}
-function showSignIn() { 
-	document.getElementById("SignIn").style.display="block"; 
-	document.getElementById("SignUp").style.display="none"; 
-}
-</script>
-<title>
-VIZ - your photo sharing companion
-</title>
-</head>
-<body>
-<div>
-<center><a href=""><img src={% static "/IMG/title.png" %}  alt="Title" align="middle|top"/></a><br>
-<p ><h3 style="color:red">The Ultimate Photo Sharing Platform.</h3></p>
-<center>
-</div>
-<div class="container">
+{% block content %}<div class="container">
 <a href="{% url 'viz-showSignUp' %}"><button  style="float:right;width: 100px; height: 50px;">Sign Up</button></a>
 <!--<button onclick="showSignIn()" style="float:right;width: 100px; height: 50px;">Login</button>-->
 <br>
 <div class="cd" id="SignIn">
 <center><h2>SIGN IN</h2></center>
-<form method="POST">{% csrf_token %}<center>
-<input style="margin-bottom: 10px;" type="username" name="username" placeholder="Username" required><br>
-<input style="margin-bottom: 10px;" type="password" name="password" placeholder="Password" required><br>
-<input style="margin-bottom: 10px;" type="submit" value="Login"></center>
+
+<form method="POST">{% csrf_token %}{{ form|crispy }}<br>
+<input style="margin-bottom: 10px;" type="submit" value="Login">
 </form>
 </div>
+</div>{% endblock content %}
+
+
 <!--<div class="cd" id="SignUp">
 <center><h2>SIGN UP</h2></center>
 <form method="POST">{% csrf_token %}
@@ -76,8 +30,3 @@ VIZ - your photo sharing companion
 <input style="margin-bottom: 10px;" type="text" name="lastname" placeholder="Last Name" required><br>
 <input style="margin-bottom: 10px;" type="submit" value="Sign Up"></center>
 </form>-->
-</div>
-<!--Hello
-<form action="/PHP/abc.php" method="POST"><button type="submit" name="submit" value="dasda" label="asdasdg" style="width: 100px; height: 30px;">yo</button></form>-->
-</body>
-</html>

@@ -1,0 +1,9 @@
+{% extends "HTML/base.html" %}
+{% block content %}
+<div class="container">
+<center>
+<a href="{% url 'viz-showSignUp' %}"><button  style="width: 100px; height: 50px;">Sign Up</button></a><br><br>
+<a href="{% url 'viz-showSignIn' %}"><button  style="width: 100px; height: 50px;">Login</button></a>
+</center>
+</div>
+{% endblock content %}

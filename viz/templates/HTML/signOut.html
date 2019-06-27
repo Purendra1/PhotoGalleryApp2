@@ -1,0 +1,18 @@
+{% extends "HTML/base.html" %}
+{% load static %}
+{% block content %}<h2><center>You have been logged out</h2></center>{% endblock content %}
+<div class="container">
+{% if messages %}
+            {% for message in messages %}
+              <div>
+               <center> {{ message }} </center>
+              </div>
+            {% endfor %}
+{% endif %}
+{{ email }}
+{{ form }}
+</div>
+<!--Hello
+<form action="/PHP/abc.php" method="POST"><button type="submit" name="submit" value="dasda" label="asdasdg" style="width: 100px; height: 30px;">yo</button></form>-->
+</body>
+</html>
