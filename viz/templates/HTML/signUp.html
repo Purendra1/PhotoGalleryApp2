@@ -1,7 +1,10 @@
 {% load static %}
+{% load crispy_forms_tags %}
 <html>
 <head>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
 <style type="text/css">
 .container {
   position: relative;
@@ -47,25 +50,32 @@ VIZ - your photo sharing companion
 <center>
 </div>
 <div class="container">
-<button onclick="showSignUp()" style="float:right;width: 100px; height: 50px;">Sign Up</button>
-<button onclick="showSignIn()" style="float:right;width: 100px; height: 50px;">Login</button>
+<!--<button onclick="showSignUp()" style="float:right;width: 100px; height: 50px;">Sign Up</button>-->
+<a href="{% url 'viz-showSignIn' %}"><button  style="float:right;width: 100px; height: 50px;">Login</button></a>
 <br>
-<div class="cd" id="SignIn">
+<div class="cd" id="SignIn" style="display:none;">
+<center><h2>SIGN IN</h2></center>
 <form method="POST">{% csrf_token %}<center>
 <input style="margin-bottom: 10px;" type="username" name="username" placeholder="Username" required><br>
 <input style="margin-bottom: 10px;" type="password" name="password" placeholder="Password" required><br>
 <input style="margin-bottom: 10px;" type="submit" value="Login"></center>
 </form>
 </div>
-<div class="cd" id="SignUp" style="display:none;">
-<form method="POST">{% csrf_token %}<center>
+<div class="cd" id="SignUp">
+<center><h2>SIGN UP</h2></center>
+<form method="POST">{% csrf_token %}
+{{ formSignUp|crispy }}<br>
+<center><input style="margin-bottom: 10px;" type="submit" value="Sign Up"></center>
+</form>
+<!--<form method="POST">{% csrf_token %}<center>
 <input style="margin-bottom: 10px;" type="username" name="username" placeholder="Username" required><br>
 <input style="margin-bottom: 10px;" type="email" name="email" placeholder="E-mail" required><br>
-<input style="margin-bottom: 10px;" type="password" name="password" placeholder="Password" required><br>
+<input style="margin-bottom: 10px;" type="password" name="password1" placeholder="Password" required><br>
+<input style="margin-bottom: 10px;" type="password" name="password2" placeholder="Confirm Password" required><br>
 <input style="margin-bottom: 10px;" type="text" name="firstname" placeholder="First Name" required><br>
 <input style="margin-bottom: 10px;" type="text" name="lastname" placeholder="Last Name" required><br>
 <input style="margin-bottom: 10px;" type="submit" value="Sign Up"></center>
-</form>
+</form>-->
 </div>
 </div>
 <!--Hello

@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
 	'viz.apps.VizConfig',
+    'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -121,7 +122,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 

@@ -2,6 +2,8 @@
 <html>
 <head>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
 <style type="text/css">
 .container {
   position: relative;
@@ -26,16 +28,7 @@
 }
 body{background-image: url('{% static "IMG/background.jpg" %}');background-size: auto;}
 </style>
-<script>
-function showSignUp() { 
-	document.getElementById("SignIn").style.display="none"; 
-	document.getElementById("SignUp").style.display="block"; 
-}
-function showSignIn() { 
-	document.getElementById("SignIn").style.display="block"; 
-	document.getElementById("SignUp").style.display="none"; 
-}
-</script>
+
 <title>
 VIZ - your photo sharing companion
 </title>
@@ -46,17 +39,7 @@ VIZ - your photo sharing companion
 <p ><h3 style="color:red">The Ultimate Photo Sharing Platform.</h3></p>
 <center>
 </div>
-<div class="container">
-{% if messages %}
-            {% for message in messages %}
-              <div>
-               <center> {{ message }} </center>
-              </div>
-            {% endfor %}
-{% endif %}
-{{ email }}
-{{ form }}
-</div>
+{% block content %}{% endblock %}
 <!--Hello
 <form action="/PHP/abc.php" method="POST"><button type="submit" name="submit" value="dasda" label="asdasdg" style="width: 100px; height: 30px;">yo</button></form>-->
 </body>
