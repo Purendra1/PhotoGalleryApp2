@@ -5,8 +5,10 @@ from .models import *
 
 @receiver(post_save, sender=User) 
 def create_profile(sender, instance, created, **kwargs):
-	v = 'scbrhkn'
-	print(v)
+	#v='something something'
+	#u='nothing'
+	#print(v)
 	if created: 
-		Profile.objects.create(user=instance) 
+		#print(u)
+		Profile.objects.create(user=instance)
 		instance.profile.save()

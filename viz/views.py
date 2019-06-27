@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.template import Context, loader
-from .forms import UserRegisterForm
+from .forms import *
 from .models import *
 # Create your views here.
 
@@ -43,4 +43,15 @@ def showSignIn(request):
 
 @login_required
 def profile(request):
-	return render(request,'HTML/profile.html')
+	if request.method == 'POST':
+		 p_form = ProfileUpateForm(request.POST, request.FILES, instance=request.user.profile)
+		 if p_form.is_valid():
+		 	p_form.save()
+		 	messages.success(request, f'Your profile has been updated!')
+		 	return redirect('viz-profile')
+	else:
+		p_form = ProfileUpateForm(instance=request.user.profile)
+		context={
+		'p_form' : p_form
+		}
+		return render(request,'HTML/profile.html',context)

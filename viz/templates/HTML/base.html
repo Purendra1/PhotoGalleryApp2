@@ -1,7 +1,11 @@
 {% load static %}
 <html>
 <head>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js">
+  function showHideProfileUpdate() { 
+  if(document.getElementById("updateProfileForm").style.display==="none")document.getElementById("updateProfileForm").style.display="block";
+  else document.getElementById("updateProfileForm").style.display="none"
+}</script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
 integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
 <link rel="stylesheet" type="text/css" href="{% static '/CSS/style.css' %}">
@@ -37,17 +41,18 @@ VIZ - your photo sharing companion
 <body>
 <br>
 {% if user.is_authenticated %}
-<a href="{% url 'viz-showSignOut' %}"><button style="float:right;align:top;margin-left=200px;"> Logout</button></a>
+<a href="{% url 'viz-showSignOut' %}"><button style="float:right;align:top;margin-left=200px;">Logout</button></a>
+<a href="{% url 'viz-profile' %}"><button style="float:right;align:top;margin-left=200px;">Profile</button></a><br>
 {% endif %}
 <div>
-<center><a href="{% url 'viz-home' %}"><img src={% static "/IMG/title.png" %}  alt="Title" align="middle|top"/></a><br>
+<center><a href="{% url 'viz-home' %}"><img src={% static "/IMG/title.png" %}  alt="Title" style="margin-left: auto; margin-right: auto;"/></a><br>
 <p ><h3 style="color:red">The Ultimate Photo Sharing Platform.</h3></p>
 <center>
 </div>
 {% block content %}{% endblock %}
 {% if messages %}
             {% for message in messages %}
-              <div class="alert alert-{{ message.tags }}">
+              <div class="alert alert-{{ message.tags }}" style="width:50%;margin-left: auto; margin-right: auto;">
                 {{ message }}
               </div>
             {% endfor %}
