@@ -17,3 +17,8 @@ class ProfileUpateForm(forms.ModelForm):
 	class Meta:
 		model=Profile
 		fields=['image','gender']
+
+class AlbumCreationForm(forms.ModelForm):
+	class Meta:
+		model=Album
+		fields=['title','description','cover']

@@ -2,21 +2,26 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-{% for albums in album %}
-		{% if albums.owner.username == user.username %}
-        <article class="media content-section">
-          <img class="rounded-circle article-img" src="{{ album.owner.profile.image.url }}"/>
-          <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2" href="#">{{ albums.owner }}</a>
-              <small class="text-muted">{{ albums.date_posted|date:"F d, Y" }}</small>
-            </div>
-            <h2 class="article-title"> <a class="article-title" href="{% url 'viz-showAlbum' albums.albumid %}">{{ albums.title }}</a></h2>
-            <p class="article-content"><img src="{{albums.cover.url}}"  height="300" width="300"/></p>
+	{% if album.owner.username == user.username %}
+      <article class="media content-section">
+        <img class="rounded-circle article-img" src="{{ album.cover.url }}" height="300" width="300">
+        <div class="media-body">
+          <div class="article-metadata">
+            <a class="mr-2" href="#">{{ album.owner }}</a>
+            <small class="text-muted">{{ album.date_posted|date:"F d, Y" }}</small>
+            
           </div>
-        </article>
-        {% endif %}
-    {% endfor %}
+          <h2 class="article-title"> {{ album.title }}</h2>
+          <small class="text-muted">{{ album.description }}</small>
+          <p class="article-content"><img src="{{albums.cover.url}}"/></p>
+        </div>
+      </article>
+      {% for photos in photo %}
+      {% if  album.albumid == photos.albumid.albumid  %}
+      <a href="{% url 'viz-showPhoto' photos.photoid %}"><img src="{{ photos.image.url }}"  style="width:300px;height:300px;max-width:50%;max-height:50%;"/></a>
+      {% endif %}
+      {% endfor %}
+      {% endif %}
 {% endblock content %}
 
 

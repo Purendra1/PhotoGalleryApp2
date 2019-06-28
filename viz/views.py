@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.utils import timezone
+import uuid
 from django.views.generic import (
     ListView,
     DetailView,
@@ -26,6 +28,19 @@ class AlbumListView(ListView):
 
 class AlbumDetailView(DetailView):
 	model=Album
+	template_name = 'HTML/showAlbum.html'
+	ordering = ['-date_posted']
+	def get_context_data(self, **kwargs):
+		context = super(AlbumDetailView, self).get_context_data(**kwargs)
+		context['photo'] = Photo.objects.filter(owner=context['album'].owner)
+		return context
+
+
+class PhotoDetailView(DetailView):
+	model=Photo
+	template_name = 'HTML/showPhoto.html'
+	ordering = ['-date_posted']
+
 
 def respNI(request):
 	return render(request,'HTML/resp.html')
@@ -72,4 +87,18 @@ def profile(request):
 		}
 		return render(request,'HTML/profile.html',context)
 
+def AlbumCreateView(request):
+		
+	if(request.method) =='POST':
+		form=AlbumCreationForm(request.POST,request.FILES,instance=Album())
+		if form.is_valid():
+			form.instance.owner = request.user
+			form.save()
+			messages.success(request,f'Your Album has been created!')
+			return redirect('viz-profile')
 
+	else:
+		form=AlbumCreationForm()
+		context={'form':form}
+		return render(request,'HTML/albumCreateForm.html',context)
+	

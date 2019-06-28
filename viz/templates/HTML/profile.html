@@ -15,7 +15,7 @@
       else {document.getElementById("updateProfileForm").style.display="block";document.getElementById("profileUpdateButton").value="Hide Update Form";}
 
   }</script>
-      	<button onclick="showHideProfileUpdate()"  value="Update Profile"><output name="bv" id="profileUpdateButton">Update Profile</output>></button>
+      	<button onclick="showHideProfileUpdate()"  value="Update Profile"><output name="bv" id="profileUpdateButton">Update Profile</output></button>
         <a href="{% url 'viz-albums' %}"><button>Albums</button></a>
       </div>
       <center><form method="POST" id="updateProfileForm" style="display: none" enctype="multipart/form-data">{% csrf_token %}

@@ -4,12 +4,22 @@ from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
+from django.views.generic import (
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    DeleteView
+)
 
 urlpatterns = [
     path('',views.home,name='viz-home'),
     path('',views.respNI,name='viz-respNI'),
     path('signUp/',views.showSignUp,name='viz-showSignUp'),
     path('albums/',views.AlbumListView.as_view(),name='viz-albums'),
+    path('albums/<pk>/',views.AlbumDetailView.as_view(),name='viz-showAlbum'),
+    path('album/create/',views.AlbumCreateView,name='viz-createAlbum'),
+    path('photos/<pk>/',views.PhotoDetailView.as_view(),name='viz-showPhoto'),
     path('signIn/',auth_views.LoginView.as_view(template_name='HTML/signIn.html'),name='viz-showSignIn'),
     path('signOut/',auth_views.LogoutView.as_view(template_name='HTML/signOut.html'),name='viz-showSignOut'),
     path('profile/',views.profile,name='viz-profile')

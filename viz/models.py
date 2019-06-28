@@ -6,20 +6,31 @@ from PIL import Image
 # Create your models here.
 
 class Album(models.Model):
-	albumid = models.IntegerField(primary_key=True, unique=True, default=uuid.uuid4())
+	albumid = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4())
 	title = models.CharField(max_length=100)
 	description = models.TextField()
 	date_posted = models.DateTimeField(default=timezone.now)
 	owner = models.ForeignKey(User,on_delete=models.CASCADE)
 	cover = models.ImageField(upload_to='album_covers')
 
+	def get_absolute_url(self):
+		return reverse('viz-showAlbum',kwargs={'pk':self.pk})
+
+	def save(self):
+		super().save()
+		img=Image.open(self.cover.path)
+		if img.height > 300 or img.width > 300:
+			output_size = (300,300)
+			img.thumbnail = (output_size)
+			img.save(self.cover.path)
+
 class Photo(models.Model):
-	photoid = models.IntegerField(primary_key=True,unique=True, default=uuid.uuid4())
+	photoid = models.UUIDField(primary_key=True,unique=True, default=uuid.uuid4())
 	description = models.TextField()
 	date_posted = models.DateTimeField(default=timezone.now)
 	albumid = models.ForeignKey(Album,on_delete=models.CASCADE)
 	owner = models.ForeignKey(User,on_delete=models.CASCADE)
-	image = models.ImageField(upload_to='')
+	image = models.ImageField(upload_to='photo_folder')
 
 class UserAlbum(models.Model):
 	owner = models.ForeignKey(User,on_delete=models.CASCADE)
