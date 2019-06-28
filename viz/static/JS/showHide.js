@@ -1,0 +1,1 @@
+function showHideProfileUpdate() { document.getElementById("updateProfileForm").style.display="block";

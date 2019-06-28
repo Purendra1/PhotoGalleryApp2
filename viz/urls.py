@@ -9,6 +9,7 @@ urlpatterns = [
     path('',views.home,name='viz-home'),
     path('',views.respNI,name='viz-respNI'),
     path('signUp/',views.showSignUp,name='viz-showSignUp'),
+    path('albums/',views.AlbumListView.as_view(),name='viz-albums'),
     path('signIn/',auth_views.LoginView.as_view(template_name='HTML/signIn.html'),name='viz-showSignIn'),
     path('signOut/',auth_views.LogoutView.as_view(template_name='HTML/signOut.html'),name='viz-showSignOut'),
     path('profile/',views.profile,name='viz-profile')
