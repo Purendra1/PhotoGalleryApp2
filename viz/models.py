@@ -13,7 +13,7 @@ class Album(models.Model):
 	description = models.TextField(blank=True)
 	date_posted = models.DateTimeField(default=timezone.now)
 	owner = models.ForeignKey(User,on_delete=models.CASCADE)
-	cover = models.ImageField(upload_to='album_covers')
+	cover = models.ImageField(upload_to='album_covers',blank=True,default='defaultcover.jpg')
 
 	def __str__(self):
 		return f'{self.title} Album'
