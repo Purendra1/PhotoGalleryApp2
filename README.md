@@ -26,4 +26,4 @@ To run, goto the main directory and run the following command:
 
 	python manage.py runserver
 
-open localhost:8000
+open localhost:8000 in a web browser
