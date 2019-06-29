@@ -112,7 +112,7 @@ class AlbumUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	fields = ['title', 'description','cover']
 
 	def form_valid(self, form):
-		form.instance.author = self.request.user
+		form.instance.owner = self.request.user
 		return super().form_valid(form)
 
 	def test_func(self):
@@ -131,3 +131,17 @@ class AlbumDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 		if self.request.user == album.owner:
 			return True
 		return False
+
+class PhotoCreateView(LoginRequiredMixin, CreateView):
+		model=Photo
+		template_name = 'HTML/photoCreateForm.html'
+		form_class = PhotoForm
+
+		def form_valid(self, form):
+			form.instance.owner = self.request.user
+			return super().form_valid(form)
+
+		def get_form_kwargs(self):
+			kwargs = super(PhotoCreateView, self).get_form_kwargs()
+			kwargs['user'] = self.request.user
+			return kwargs
