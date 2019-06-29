@@ -4,7 +4,11 @@
 {% block content %}
 <div style="float:left;">
   <a href="{% url 'viz-updateAlbum' album.albumid %}"><button>Update your Album</button></a>
-</div><br><br>
+</div>
+<div style="float:left;">
+  <a href="{% url 'viz-deleteAlbum' album.albumid %}"><button>Delete your Album</button></a>
+</div>
+<br><br>
 	{% if album.owner.username == user.username %}
       <article class="media content-section">
         <img class="rounded-circle article-img" src="{{ album.cover.url }}" height="300" width="300">

@@ -106,7 +106,7 @@ def AlbumCreateView(request):
 		return render(request,'HTML/albumCreateForm.html',context)
 	
 
-class AlbumUpdateView(LoginRequiredMixin, UpdateView):
+class AlbumUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 	model = Album
 	template_name = 'HTML/albumCreateForm.html'
 	fields = ['title', 'description','cover']
@@ -115,10 +115,19 @@ class AlbumUpdateView(LoginRequiredMixin, UpdateView):
 		form.instance.author = self.request.user
 		return super().form_valid(form)
 
-	'''
 	def test_func(self):
-		post = self.get_object()
-		if self.request.user == post.author:
+		album = self.get_object()
+		if self.request.user == album.owner:
 			return True
 		return False
-	'''
+
+class AlbumDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+	model=Album
+	template_name = 'HTML/albumDelete.html'
+	success_url = '/albums'
+	success_message = 'Your Album has been deleted!'
+	def test_func(self):
+		album = self.get_object()
+		if self.request.user == album.owner:
+			return True
+		return False

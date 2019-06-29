@@ -19,6 +19,7 @@ urlpatterns = [
     path('albums/',views.AlbumListView.as_view(),name='viz-albums'),
     path('albums/<pk>/',views.AlbumDetailView.as_view(),name='viz-showAlbum'),
     path('albums/<pk>/update/',views.AlbumUpdateView.as_view(),name='viz-updateAlbum'),
+    path('albums/<pk>/delete/',views.AlbumDeleteView.as_view(),name='viz-deleteAlbum'),
     path('album/create/',views.AlbumCreateView,name='viz-createAlbum'),
     path('photos/<pk>/',views.PhotoDetailView.as_view(),name='viz-showPhoto'),
     path('signIn/',auth_views.LoginView.as_view(template_name='HTML/signIn.html'),name='viz-showSignIn'),
