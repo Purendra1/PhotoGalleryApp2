@@ -2,6 +2,10 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
+<div style="float:left;">
+  <a href="{% url 'viz-createAlbum' %}"><button>Create an Album</button></a>
+</div><br><br>
+<h1 style="color:red;">YOUR ALBUMS</h1>
 {% for albums in album %}
 		{% if albums.owner.username == user.username %}
         <article class="media content-section">

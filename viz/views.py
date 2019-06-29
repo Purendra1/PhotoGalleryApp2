@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse
 from django.utils import timezone
 import uuid
@@ -19,14 +20,14 @@ from .models import *
 def home(request):
 	return render(request,'HTML/home.html')
 
-class AlbumListView(ListView):
+class AlbumListView(LoginRequiredMixin, ListView):
     model = Album
     template_name = 'HTML/albumList.html'  # <app>/<model>_<viewtype>.html
     context_object_name = 'album'
     ordering = ['-date_posted']
 
 
-class AlbumDetailView(DetailView):
+class AlbumDetailView(LoginRequiredMixin, DetailView):
 	model=Album
 	template_name = 'HTML/showAlbum.html'
 	ordering = ['-date_posted']
@@ -36,7 +37,7 @@ class AlbumDetailView(DetailView):
 		return context
 
 
-class PhotoDetailView(DetailView):
+class PhotoDetailView(LoginRequiredMixin, DetailView):
 	model=Photo
 	template_name = 'HTML/showPhoto.html'
 	ordering = ['-date_posted']
@@ -51,15 +52,16 @@ def showSignUp(request):
 		return render(request,'HTML/signUp.html', {'form': form})
 	else:
 		if request.method == 'POST':
-			messages.success(request,f'this msd')
+			
 			form = UserRegisterForm(request.POST)
 			if form.is_valid():
 				form.save()
 				email=request.POST['email']
-				messages.success(request,f'Your Profile has been created {username}')
+				messages.success(request,f'Your Profile has been created')
 
 				return respNI(request)
 			else:
+				messages.warning(request,f'Invalid Form')
 				form = UserRegisterForm(request.POST)
 			return render(request, 'HTML/signUp.html', {'form': form})
 
@@ -87,6 +89,7 @@ def profile(request):
 		}
 		return render(request,'HTML/profile.html',context)
 
+@login_required
 def AlbumCreateView(request):
 		
 	if(request.method) =='POST':
@@ -98,7 +101,24 @@ def AlbumCreateView(request):
 			return redirect('viz-profile')
 
 	else:
-		form=AlbumCreationForm()
+		form=AlbumCreationForm(request.POST,request.FILES,instance=Album())
 		context={'form':form}
 		return render(request,'HTML/albumCreateForm.html',context)
 	
+
+class AlbumUpdateView(LoginRequiredMixin, UpdateView):
+	model = Album
+	template_name = 'HTML/albumCreateForm.html'
+	fields = ['title', 'description','cover']
+
+	def form_valid(self, form):
+		form.instance.author = self.request.user
+		return super().form_valid(form)
+
+	'''
+	def test_func(self):
+		post = self.get_object()
+		if self.request.user == post.author:
+			return True
+		return False
+	'''

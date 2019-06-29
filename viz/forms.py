@@ -7,16 +7,18 @@ class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
     firstname = forms.CharField()
     lastname = forms.CharField()
+    gender = forms.CharField(widget=forms.Select(choices=(("M", "M"),("F", "F"),("T", "T"))))
+    image = forms.ImageField(required=False)
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2' , 'firstname' , 'lastname']
+        fields = ['username', 'email', 'password1', 'password2' , 'firstname' , 'lastname', 'gender','image']
 
 class ProfileUpateForm(forms.ModelForm):
 	
 	class Meta:
 		model=Profile
-		fields=['image','gender']
+		fields=['image','gender','firstname','lastname','email']
 
 class AlbumCreationForm(forms.ModelForm):
 	class Meta:

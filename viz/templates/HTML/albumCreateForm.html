@@ -2,8 +2,16 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}<div class="container">
+{% if "update" in request.build_absolute_uri %}
+<center><h2>UPDATE YOUR ALBUM</h2></center>
+{% else %}
 <center><h2>CREATE AN ALBUM</h2></center>
+{% endif %}
 <form method="POST" enctype=multipart/form-data>{% csrf_token %}
 {{ form|crispy }}<br>
+{% if "update" in request.build_absolute_uri %}
+<center><input style="margin-bottom: 10px;" type="submit" value="Update"></center>
+{% else %}
 <center><input style="margin-bottom: 10px;" type="submit" value="Create"></center>
+{% endif %}
 </form></div></div>{% endblock content %}

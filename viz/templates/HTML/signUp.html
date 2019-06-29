@@ -4,7 +4,7 @@
 {% block content %}<div class="container">
 <a href="{% url 'viz-showSignIn' %}"><button  style="float:right;width: 100px; height: 50px;">Login</button></a><div class="cd" id="SignUp">
 <center><h2>SIGN UP</h2></center>
-<form method="POST">{% csrf_token %}
+<form method="POST" enctype="multipart/form-data">{% csrf_token %}
 {{ form|crispy }}<br>
 <center><input style="margin-bottom: 10px;" type="submit" value="SignUp"></center>
 </form></div></div>{% endblock content %}

@@ -7,7 +7,8 @@
         <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
         <div class="media-body">
           <h2 class="account-heading">{{ user.username }}</h2>
-          <p class="text-secondary">{{ user.email }}</p>
+          <p class="text-secondary">{{ user.profile.email }}</p>
+          <p class="text-secondary">{{ user.profile.firstname }} {{ user.profile.lastname }}</p>
         </div>
       </div>
       <div><script type="text/javascript">function showHideProfileUpdate() { var x= document.getElementById("updateProfileForm").style.display;
