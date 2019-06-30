@@ -41,7 +41,12 @@ VIZ - your photo sharing companion
 <a href="{% url 'viz-profile' %}"><button style="float:right;align:top;margin-left=200px;">Profile</button></a><br>
 {% endif %}
 <div>
-<center><a href="{% url 'viz-home' %}"><img src={% static "/IMG/title.png" %}  alt="Title" style="margin-left: auto; margin-right: auto;"/></a><br>
+<center>
+  {% if user.is_authenticated %}
+  <a href="{% url 'viz-profile' %}"><img src={% static "/IMG/title.png" %}  alt="Title" style="margin-left: auto; margin-right: auto;"/></a><br>
+  {% else %}
+  <a href="{% url 'viz-home' %}"><img src={% static "/IMG/title.png" %}  alt="Title" style="margin-left: auto; margin-right: auto;"/></a><br>
+  {% endif %}
 <p ><h3 style="color:red">The Ultimate Photo Sharing Platform.</h3></p>
 <center>
 </div>

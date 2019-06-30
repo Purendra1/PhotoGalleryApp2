@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
@@ -25,7 +26,11 @@ urlpatterns = [
     path('photos/<pk>/',views.PhotoDetailView.as_view(),name='viz-showPhoto'),
     path('signIn/',auth_views.LoginView.as_view(template_name='HTML/signIn.html'),name='viz-showSignIn'),
     path('signOut/',auth_views.LogoutView.as_view(template_name='HTML/signOut.html'),name='viz-showSignOut'),
-    path('profile/',views.profile,name='viz-profile')
+    path('profile/',views.profile,name='viz-profile'),
+    path('photos/<pk>/update/',views.PhotoUpdateView.as_view(),name='viz-updatePhoto'),
+    path('photos/<pk>/delete/',views.PhotoDeleteView.as_view(),name='viz-deletePhoto'),
+    path('changePassword/',views.changePassword,name='viz-passwordChange')
+
 ]
 
 if settings.DEBUG:

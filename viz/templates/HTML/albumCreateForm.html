@@ -1,12 +1,26 @@
 {% extends "HTML/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% block content %}<div class="container">
+{% block content %}
+
+{% if "update" in request.build_absolute_uri %}
+<div style="float:left;">
+  <a href="{% url 'viz-showAlbum' album.albumid %}"><button class="btn btn-back">BACK TO ALBUM</button></a>
+</div>
+{% else %}
+<div style="float:left;">
+  <a href="{% url 'viz-albums' %}"><button class="btn btn-back">BACK TO ALBUMS</button></a>
+</div>
+{% endif %}
+<br><br>
+<div class="container">
 {% if "update" in request.build_absolute_uri %}
 <center><h2>UPDATE YOUR ALBUM</h2></center>
 {% else %}
 <center><h2>CREATE AN ALBUM</h2></center>
 {% endif %}
+
+
 <form method="POST" enctype=multipart/form-data>{% csrf_token %}
 {{ form|crispy }}<br>
 {% if "update" in request.build_absolute_uri %}
@@ -14,4 +28,5 @@
 {% else %}
 <center><input style="margin-bottom: 10px;" type="submit" value="Create"></center>
 {% endif %}
-</form></div></div>{% endblock content %}
+</form></div></div>
+{% endblock content %}

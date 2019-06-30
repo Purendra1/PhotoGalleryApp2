@@ -5,14 +5,19 @@ from .models import *
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
-    firstname = forms.CharField()
-    lastname = forms.CharField()
-    gender = forms.CharField(widget=forms.Select(choices=(("M", "M"),("F", "F"),("T", "T"))))
-    image = forms.ImageField(required=False)
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2' , 'firstname' , 'lastname', 'gender','image']
+        fields = ['username', 'email', 'password1', 'password2']
+
+    def clean_email(self):
+        # Get the email
+        email = self.cleaned_data.get('email')
+        try:
+            match = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return email
+        raise forms.ValidationError('This email address is already in use.')
 
 class ProfileUpateForm(forms.ModelForm):
 	

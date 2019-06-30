@@ -3,11 +3,16 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <div style="float:left;">
+  <a href="{% url 'viz-profile' %}"><button class="btn btn-back">BACK TO PROFILE</button></a>
+</div>
+<br><br>
+<div style="float:left;">
   <a href="{% url 'viz-createAlbum' %}"><button>Create an Album</button></a>
 </div>
 <div style="float:left;">
   <a href="{% url 'viz-createPhoto' %}"><button>Add a Photo</button></a>
 </div>
+
 <br><br>
 <h1 style="color:red;">YOUR ALBUMS</h1>
 {% for albums in album %}

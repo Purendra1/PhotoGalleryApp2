@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse
 from django.utils import timezone
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 import uuid
 from django.views.generic import (
     ListView,
@@ -13,6 +15,7 @@ from django.views.generic import (
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.template import Context, loader
+from django.db import IntegrityError
 from .forms import *
 from .models import *
 # Create your views here.
@@ -56,9 +59,7 @@ def showSignUp(request):
 			form = UserRegisterForm(request.POST)
 			if form.is_valid():
 				form.save()
-				email=request.POST['email']
 				messages.success(request,f'Your Profile has been created')
-
 				return respNI(request)
 			else:
 				messages.warning(request,f'Invalid Form')
@@ -145,3 +146,49 @@ class PhotoCreateView(LoginRequiredMixin, CreateView):
 			kwargs = super(PhotoCreateView, self).get_form_kwargs()
 			kwargs['user'] = self.request.user
 			return kwargs
+
+
+#def newProfile(request):
+#	return render(request,'HTML/createProfile.html',{'p_form':ProfileUpateForm(request.POST, request.FILES, instance=request.user.profile)})
+
+class PhotoUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+	model = Photo
+	template_name = 'HTML/PhotoCreateForm.html'
+	fields = ['description']
+
+	def form_valid(self, form):
+		form.instance.owner = self.request.user
+		return super().form_valid(form)
+
+	def test_func(self):
+		photo = self.get_object()
+		if self.request.user == photo.owner:
+			return True
+		return False
+
+class PhotoDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+	model=Photo
+	template_name = 'HTML/photoDelete.html'
+	success_url = '/albums'
+	success_message = 'Your Photo has been deleted!'
+	def test_func(self):
+		photo = self.get_object()
+		if self.request.user == photo.owner:
+			return True
+		return False
+
+@login_required
+def changePassword(request):
+	if request.method == 'POST':
+		form = PasswordChangeForm(data=request.POST, user=request.user)
+
+		if form.is_valid():
+			form.save()
+			update_session_auth_hash(request, form.user)
+			return redirect(reverse('viz-profile'))
+		else:
+			return redirect(reverse('viz-passwordChange'))
+	else:
+		form = PasswordChangeForm(user=request.user)
+
+	return render(request, 'HTML/passwordChange.html', {'form': form})
