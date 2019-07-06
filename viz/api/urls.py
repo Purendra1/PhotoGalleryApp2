@@ -4,7 +4,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView
 from django.conf import settings
 from django.conf.urls.static import static
-from . import views
+from .views import *
 from django.views.generic import (
     ListView,
     DetailView,
@@ -13,6 +13,21 @@ from django.views.generic import (
     DeleteView
 )
 
+urlpatterns = [
+    path('albums/',AlbumListAPIView.as_view(),name='viz-api-albumList'),
+    path('photos/',PhotoListAPIView.as_view(),name='viz-api-photoList'),
+    path('album/<pk>/',AlbumDetailAPIView.as_view(),name='viz-api-albumDetails'),
+    path('photo/<pk>/',PhotoDetailAPIView.as_view(),name='viz-api-photoDetails'),
+    path('album/<pk>/update/',AlbumUpdateAPIView.as_view(),name='viz-api-updateAlbum'),
+    path('album/<pk>/delete/',AlbumDeleteAPIView.as_view(),name='viz-api-deleteAlbum'),
+    path('photo/<pk>/update/',PhotoUpdateAPIView.as_view(),name='viz-api-updatePhoto'),
+    path('photo/<pk>/delete/',PhotoDeleteAPIView.as_view(),name='viz-api-deletePhoto'),
+    path('albums/create/',AlbumCreateAPIView.as_view(),name='viz-api-createAlbum'),
+    path('photos/create/',PhotoCreateAPIView.as_view(),name='viz-api-createPhoto')
+
+]
+
+'''
 urlpatterns = [
     path('',views.home,name='viz-home'),
     path('',views.respNI,name='viz-respNI'),
@@ -30,7 +45,8 @@ urlpatterns = [
     path('photos/<pk>/update/',views.PhotoUpdateView.as_view(),name='viz-updatePhoto'),
     path('photos/<pk>/delete/',views.PhotoDeleteView.as_view(),name='viz-deletePhoto'),
     path('changePassword/',views.changePassword,name='viz-passwordChange')
-]
 
+]
+'''
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

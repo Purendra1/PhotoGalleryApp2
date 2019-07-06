@@ -38,7 +38,7 @@ class Photo(models.Model):
 	image = models.ImageField(upload_to='photo_folder')
 
 	def __str__(self):
-		return f'{self.title} Photo'
+		return f'{self.photoid} Photo'
 
 	def get_absolute_url(self):
 		return reverse('viz-showPhoto',kwargs={'pk':self.pk})
