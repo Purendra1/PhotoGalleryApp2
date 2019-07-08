@@ -1,7 +1,30 @@
 from rest_framework import serializers
 from viz.models import *
+from rest_framework.serializers import (
+	HyperlinkedIdentityField,
+	SerializerMethodField
+	)
+from rest_framework import routers
+from django.http import JsonResponse
 
-class AlbumSerializer(serializers.ModelSerializer):
+class AlbumListSerializer(serializers.ModelSerializer):
+	detail_url = HyperlinkedIdentityField(
+		view_name='viz-api:viz-api-albumDetails'
+		)
+	class Meta:
+		model=Album
+		fields = [
+			'detail_url',
+			'title',
+			'date_posted',
+			'owner',
+			'cover',
+		]
+
+
+
+class AlbumDetailSerializer(serializers.ModelSerializer):
+	photos = SerializerMethodField()
 	class Meta:
 		model=Album
 		fields = [
@@ -9,9 +32,18 @@ class AlbumSerializer(serializers.ModelSerializer):
 			'description',
 			'date_posted',
 			'owner',
-			'cover'
+			'cover',
+			'photos'
 		]
-		
+
+	def get_photos(self,obj):
+		qs = Photo.objects.filter(albumid=obj)
+		serializer_context = {
+    	'request': self.context['request'],
+		}
+		photos = PhotoListSerializer(qs,many=True,context=serializer_context).data
+		return photos
+
 class AlbumUpdateSerializer(serializers.ModelSerializer):
 	class Meta:
 		model=Album
@@ -30,6 +62,11 @@ class AlbumCreateSerializer(serializers.ModelSerializer):
 			'cover'
 		]
 
+	def create(self, validated_data):
+		image = validated_data.pop('cover')
+		album = Album.objects.create(**validated_data)
+		album.cover = image
+		return album
 
 
 
@@ -45,8 +82,25 @@ class PhotoCreateSerializer(serializers.ModelSerializer):
 			'image'
 		]
 
+	def create(self, validated_data):
+		return Photo.objects.create(**validated_data)
 
-class PhotoSerializer(serializers.ModelSerializer):
+class PhotoListSerializer(serializers.ModelSerializer):
+	url = HyperlinkedIdentityField(
+		view_name='viz-api:viz-api-photoDetails'
+		)
+	class Meta:
+		model=Photo
+		fields = [
+			'url',
+			'photoid',
+			'date_posted',
+			'owner',
+			'albumid'
+		]
+
+
+class PhotoDetailSerializer(serializers.ModelSerializer):
 	class Meta:
 		model=Photo
 		fields = [
@@ -64,7 +118,7 @@ class PhotoUpdateSerializer(serializers.ModelSerializer):
 		model=Photo
 		fields = [
 			'description',
-			'albumid',
+			'albumid'
 		]
 		
 
