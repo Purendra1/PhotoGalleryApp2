@@ -118,7 +118,6 @@ class PhotoUpdateSerializer(serializers.ModelSerializer):
 		model=Photo
 		fields = [
 			'description',
-			'albumid'
 		]
 		
 

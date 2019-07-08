@@ -85,7 +85,7 @@ class PhotoDetailAPIView(RetrieveAPIView):
 
 class PhotoUpdateAPIView(UpdateAPIView):
 	def get_queryset(self):
-		return Album.objects.filter(owner=self.request.user)
+		return Photo.objects.filter(owner=self.request.user)
 	serializer_class = PhotoUpdateSerializer
 	permission_classes = [IsOwnerOrReadOnly,IsAuthenticated]
 

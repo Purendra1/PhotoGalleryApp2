@@ -16,14 +16,14 @@ from django.views.generic import (
 urlpatterns = [
     path('albums/',AlbumListAPIView.as_view(),name='viz-api-albumList'),
     path('photos/',PhotoListAPIView.as_view(),name='viz-api-photoList'),
-    path('album/<pk>/',AlbumDetailAPIView.as_view(),name='viz-api-albumDetails'),
-    path('photo/<pk>/',PhotoDetailAPIView.as_view(),name='viz-api-photoDetails'),
-    path('album/<pk>/update/',AlbumUpdateAPIView.as_view(),name='viz-api-updateAlbum'),
-    path('album/<pk>/delete/',AlbumDeleteAPIView.as_view(),name='viz-api-deleteAlbum'),
-    path('photo/<pk>/update/',PhotoUpdateAPIView.as_view(),name='viz-api-updatePhoto'),
-    path('photo/<pk>/delete/',PhotoDeleteAPIView.as_view(),name='viz-api-deletePhoto'),
-    path('albums/create/',AlbumCreateAPIView.as_view(),name='viz-api-createAlbum'),
-    path('photos/create/',PhotoCreateAPIView.as_view(),name='viz-api-createPhoto')
+    path('albums/<pk>/',AlbumDetailAPIView.as_view(),name='viz-api-albumDetails'),
+    path('photos/<pk>/',PhotoDetailAPIView.as_view(),name='viz-api-photoDetails'),
+    path('albums/<pk>/update/',AlbumUpdateAPIView.as_view(),name='viz-api-updateAlbum'),
+    path('albums/<pk>/delete/',AlbumDeleteAPIView.as_view(),name='viz-api-deleteAlbum'),
+    path('photos/<pk>/update/',PhotoUpdateAPIView.as_view(),name='viz-api-updatePhoto'),
+    path('photos/<pk>/delete/',PhotoDeleteAPIView.as_view(),name='viz-api-deletePhoto'),
+    path('album/create/',AlbumCreateAPIView.as_view(),name='viz-api-createAlbum'),
+    path('photo/create/',PhotoCreateAPIView.as_view(),name='viz-api-createPhoto')
 
 ]
 
