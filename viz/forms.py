@@ -39,3 +39,16 @@ class PhotoForm(forms.ModelForm):
        user = kwargs.pop('user')
        super(PhotoForm, self).__init__(*args, **kwargs)
        self.fields['albumid'].queryset = Album.objects.filter(owner=user)
+
+
+class PhotoFormInAlbum(forms.ModelForm):
+    class Meta:
+        model=Photo
+        fields = ['description','image','albumid']
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        key = kwargs.pop('albumid')
+        super(PhotoFormInAlbum, self).__init__(*args, **kwargs)
+        print(args)
+        self.fields['albumid'].queryset = Album.objects.filter(albumid=key)

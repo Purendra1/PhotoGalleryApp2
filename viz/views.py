@@ -148,6 +148,27 @@ class PhotoCreateView(LoginRequiredMixin, CreateView):
 			return kwargs
 
 
+class PhotoCreateViewInAlbum(LoginRequiredMixin, CreateView):
+		model=Photo
+		template_name = 'HTML/photoCreateForm.html'
+		form_class = PhotoFormInAlbum
+
+		def form_valid(self, form):
+			form.instance.owner = self.request.user
+			return super().form_valid(form)
+
+		def get_form_kwargs(self):
+			kwargs = super(PhotoCreateViewInAlbum, self).get_form_kwargs()
+			kwargs['user'] = self.request.user
+			url=self.request.build_absolute_uri()
+			i=url.index('album/')
+			i=i+6
+			key=url[i:i+36:1]
+			kwargs['albumid'] = key
+			return kwargs
+
+
+
 #def newProfile(request):
 #	return render(request,'HTML/createProfile.html',{'p_form':ProfileUpateForm(request.POST, request.FILES, instance=request.user.profile)})
 

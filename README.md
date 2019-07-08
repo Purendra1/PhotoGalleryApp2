@@ -21,6 +21,10 @@ Software Requirements to run:
 
 	pip install django-cleanup
 	
+-djangorestframework
+
+	pip install djangorestframework
+
 
 To run, goto the main directory and run the following command:
 

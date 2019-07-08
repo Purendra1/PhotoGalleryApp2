@@ -23,6 +23,7 @@ urlpatterns = [
     path('albums/<pk>/delete/',views.AlbumDeleteView.as_view(),name='viz-deleteAlbum'),
     path('album/create/',views.AlbumCreateView,name='viz-createAlbum'),
     path('photo/create/',views.PhotoCreateView.as_view(),name='viz-createPhoto'),
+    path('album/<pk>/photo/create/',views.PhotoCreateViewInAlbum.as_view(),name='viz-createPhotoInAlbum'),
     path('photos/<pk>/',views.PhotoDetailView.as_view(),name='viz-showPhoto'),
     path('signIn/',auth_views.LoginView.as_view(template_name='HTML/signIn.html'),name='viz-showSignIn'),
     path('signOut/',auth_views.LogoutView.as_view(template_name='HTML/signOut.html'),name='viz-showSignOut'),
