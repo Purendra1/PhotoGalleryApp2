@@ -5,10 +5,13 @@ from .models import *
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
-
+    firstname = forms.CharField()
+    lastname = forms.CharField()
+    gender = forms.CharField(widget=forms.Select(choices=(("M", "M"),("F", "F"),("T", "T"))))
+    image = forms.ImageField(required=False)
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['username', 'email', 'password1', 'password2','firstname','lastname','gender','image']
 
     def clean_email(self):
         # Get the email

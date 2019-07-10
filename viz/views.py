@@ -58,7 +58,17 @@ def showSignUp(request):
 			
 			form = UserRegisterForm(request.POST)
 			if form.is_valid():
+				username = form.cleaned_data['username']
+				email = form.cleaned_data['email']
+				password = form.cleaned_data['password1']
+				firstname = form.cleaned_data['firstname']
+				lastname = form.cleaned_data['lastname']
+				gender = form.cleaned_data['gender']
+				image = request.FILES['image']
 				form.save()
+				user = User.objects.filter(username=username).first()
+				prof = Profile.objects.create(user=user,email=email,firstname=firstname,lastname=lastname,gender=gender,image=image)
+				prof.save()
 				messages.success(request,f'Your Profile has been created')
 				return respNI(request)
 			else:

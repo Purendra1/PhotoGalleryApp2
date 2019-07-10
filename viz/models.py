@@ -73,13 +73,3 @@ class Profile(models.Model):
     		output_size = (300,300)
     		img.thumbnail = (output_size)
     		img.save(self.image.path)
-    
-    def create_profile(sender, instance, created, **kwargs):
-    	if created:
-    		profile=Profile.objects.create(user=instance)
-    		user.profile.firstname=instance.firstname
-    		user.profile.lastname=instance.lastname
-    		user.profile.email=instance.email
-    	post_save.connect(create_profile, sender=User)
-
-    	

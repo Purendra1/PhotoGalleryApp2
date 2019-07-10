@@ -23,7 +23,10 @@ urlpatterns = [
     path('photos/<pk>/update/',PhotoUpdateAPIView.as_view(),name='viz-api-updatePhoto'),
     path('photos/<pk>/delete/',PhotoDeleteAPIView.as_view(),name='viz-api-deletePhoto'),
     path('album/create/',AlbumCreateAPIView.as_view(),name='viz-api-createAlbum'),
-    path('photo/create/',PhotoCreateAPIView.as_view(),name='viz-api-createPhoto')
+    path('photo/create/',PhotoCreateAPIView.as_view(),name='viz-api-createPhoto'),
+    path('signUp/',UserCreateAPIView.as_view(),name='viz-api-SignUp'),
+    path('signIn/',UserLoginAPIView.as_view(),name='viz-api-SignIn'),
+    path('signOut/',UserLogoutAPIView.as_view(),name='viz-api-SignOut'),
 
 ]
 
@@ -50,3 +53,4 @@ urlpatterns = [
 '''
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
