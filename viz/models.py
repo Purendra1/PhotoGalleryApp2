@@ -21,7 +21,7 @@ class Album(models.Model):
 	def get_absolute_url(self):
 		return reverse('viz-showAlbum',kwargs={'pk':self.pk})
 
-	def save(self):
+	def save(self, *args, **kwargs):
 		super().save()
 		img=Image.open(self.cover.path)
 		if img.height > 300 or img.width > 300:
@@ -43,7 +43,7 @@ class Photo(models.Model):
 	def get_absolute_url(self):
 		return reverse('viz-showPhoto',kwargs={'pk':self.pk})
 
-	def save(self):
+	def save(self, *args, **kwargs):
 		super().save()
 		img=Image.open(self.image.path)
 		if img.height > 300 or img.width > 300:

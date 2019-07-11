@@ -5,6 +5,7 @@ class IsOwnerOrReadOnly(BasePermission):
 	message = 'You can\'t edit someone else\'s Objects'
 	my_safe_methods = ['GET','PUT']
 	def has_permission(self,request,view):
+		'''
 		url=request.build_absolute_uri()
 		i=-1
 		try:
@@ -27,7 +28,7 @@ class IsOwnerOrReadOnly(BasePermission):
 			return False
 		except:
 			print('not an album')
-
+		'''
 		if request.method in self.my_safe_methods:
 			return True
 		return False

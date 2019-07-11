@@ -9,11 +9,11 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from rest_framework.authtoken.models import Token
-
+from rest_framework.fields import CurrentUserDefault
 
 class AlbumListSerializer(serializers.ModelSerializer):
 	detail_url = HyperlinkedIdentityField(
-		view_name='viz-api:viz-api-albumDetails'
+		view_name='viz-api-albumDetails'
 		)
 	class Meta:
 		model=Album
@@ -73,11 +73,12 @@ class AlbumCreateSerializer(serializers.ModelSerializer):
 		return album
 
 
-
+############################################################################################################################
 
 
 
 class PhotoCreateSerializer(serializers.ModelSerializer):
+
 	class Meta:
 		model=Photo
 		fields = [
@@ -86,12 +87,26 @@ class PhotoCreateSerializer(serializers.ModelSerializer):
 			'image'
 		]
 
+	def get_fields(self, *args, **kwargs):
+		fields = super(PhotoCreateSerializer, self).get_fields(*args, **kwargs)
+		req = self.context['request']
+		url = req.build_absolute_uri()
+		i = url.index('albums/')
+		i=i+7
+		key=url[i:i+36:1]
+		qs=Album.objects.filter(albumid=key)
+		fields['albumid'].queryset = qs
+		return fields
+
+
 	def create(self, validated_data):
 		return Photo.objects.create(**validated_data)
 
+	
+
 class PhotoListSerializer(serializers.ModelSerializer):
 	url = HyperlinkedIdentityField(
-		view_name='viz-api:viz-api-photoDetails'
+		view_name='viz-api-photoDetails'
 		)
 	class Meta:
 		model=Photo
@@ -124,6 +139,10 @@ class PhotoUpdateSerializer(serializers.ModelSerializer):
 			'description',
 		]
 		
+
+
+
+############################################################################################################################
 
 
 
@@ -183,11 +202,17 @@ class UserCreateSerializer(serializers.ModelSerializer):
 		firstname = validated_data['firstname']
 		lastname = validated_data['lastname']
 		gender = validated_data['gender']
-		image = validated_data['image']
+		try:
+			image = validated_data['image']
+		except:
+			image = None
 		user = User(username = username,email=email)
 		user.set_password(password)
 		user.save()
-		prof = Profile.objects.create(user=user,email=email,firstname=firstname,lastname=lastname,gender=gender,image=image)
+		if image is not None:
+			prof = Profile.objects.create(user=user,email=email,firstname=firstname,lastname=lastname,gender=gender,image=image)
+		else:
+			prof = Profile.objects.create(user=user,email=email,firstname=firstname,lastname=lastname,gender=gender)
 		prof.save()
 		return validated_data
 

@@ -1,0 +1,36 @@
+{% extends "HTML/apiBase.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+{% if "update" in request.build_absolute_uri %}
+<div style="float:left;">
+  <a href="{% url 'viz-api-albumDetails' album.albumid %}"><button class="btn btn-back">BACK TO ALBUM</button></a>
+</div>
+{% else %}
+<div style="float:left;">
+  <a href="{% url 'viz-api-albumList' %}"><button class="btn btn-back">BACK TO ALBUMS</button></a>
+</div>
+{% endif %}
+<br><br>
+<div class="container">
+{% if "update" in request.build_absolute_uri %}
+<center><h2>UPDATE YOUR ALBUM</h2></center>
+{% else %}
+<center><h2>CREATE AN ALBUM</h2></center>
+{% endif %}
+
+
+{% if "update" in request.build_absolute_uri %}
+<form method="POST" enctype=multipart/form-data>{% csrf_token %}
+{{ form|crispy }}<br>
+<center><input style="margin-bottom: 10px;" type="submit" value="Update"></center>
+</form>
+{% else %}
+<form method="POST" enctype=multipart/form-data>{% csrf_token %}
+{{ form|crispy }}<br>
+<center><input style="margin-bottom: 10px;" type="submit" value="Create"></center>
+</form>
+{% endif %}
+</div></div>
+{% endblock content %}

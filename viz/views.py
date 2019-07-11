@@ -64,10 +64,16 @@ def showSignUp(request):
 				firstname = form.cleaned_data['firstname']
 				lastname = form.cleaned_data['lastname']
 				gender = form.cleaned_data['gender']
-				image = request.FILES['image']
+				try:
+					image = request.FILES['image']
+				except:
+					image = None
 				form.save()
 				user = User.objects.filter(username=username).first()
-				prof = Profile.objects.create(user=user,email=email,firstname=firstname,lastname=lastname,gender=gender,image=image)
+				if image is not None:
+					prof = Profile.objects.create(user=user,email=email,firstname=firstname,lastname=lastname,gender=gender,image=image)
+				else:
+					prof = Profile.objects.create(user=user,email=email,firstname=firstname,lastname=lastname,gender=gender)
 				prof.save()
 				messages.success(request,f'Your Profile has been created')
 				return respNI(request)

@@ -23,7 +23,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
 	path('',include('viz.urls')),
-    path('api/',include(('viz.api.urls','viz-api'),namespace='viz-api'))
+    path('api/',include('viz.api.urls'))
 ]
 
 if settings.DEBUG:

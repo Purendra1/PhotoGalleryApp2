@@ -22,16 +22,24 @@ class UserRegisterForm(UserCreationForm):
             return email
         raise forms.ValidationError('This email address is already in use.')
 
+
+
+
 class ProfileUpateForm(forms.ModelForm):
 	
 	class Meta:
 		model=Profile
 		fields=['image','gender','firstname','lastname','email']
 
+
+
 class AlbumCreationForm(forms.ModelForm):
 	class Meta:
 		model=Album
 		fields=['title','description','cover']
+
+
+
 
 class PhotoForm(forms.ModelForm):
     class Meta:
@@ -44,6 +52,9 @@ class PhotoForm(forms.ModelForm):
        self.fields['albumid'].queryset = Album.objects.filter(owner=user)
 
 
+
+
+
 class PhotoFormInAlbum(forms.ModelForm):
     class Meta:
         model=Photo
@@ -53,5 +64,20 @@ class PhotoFormInAlbum(forms.ModelForm):
         user = kwargs.pop('user')
         key = kwargs.pop('albumid')
         super(PhotoFormInAlbum, self).__init__(*args, **kwargs)
-        print(args)
         self.fields['albumid'].queryset = Album.objects.filter(albumid=key)
+
+
+class PhotoFormInAlbumAPI(forms.ModelForm):
+    class Meta:
+        model=Photo
+        fields = ['description','image','albumid']
+
+    def __init__(self, *args, **kwargs):
+        try:
+            kwa=kwargs.pop('kwargs')
+            user = kwa.pop('user')
+            key = kwa.pop('albumid')
+            super(PhotoFormInAlbumAPI, self).__init__(*args, **kwargs)
+            self.fields['albumid'].queryset = Album.objects.filter(albumid=key)
+        except:
+            pass
