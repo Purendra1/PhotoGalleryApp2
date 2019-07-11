@@ -29,7 +29,7 @@ class ProfileUpateForm(forms.ModelForm):
 	
 	class Meta:
 		model=Profile
-		fields=['image','gender','firstname','lastname','email']
+		fields=['image','gender','firstname','lastname']
 
 
 

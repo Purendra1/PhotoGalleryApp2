@@ -148,19 +148,17 @@ class PhotoUpdateSerializer(serializers.ModelSerializer):
 
 class UserCreateSerializer(serializers.ModelSerializer):
 	password2 = serializers.CharField(
-        write_only=True,
         required=True,
         style={'input_type': 'password', 'placeholder': 'Password'},
         label = "Confirm Password"
     )
 	password = serializers.CharField(
-        write_only=True,
         required=True,
         style={'input_type': 'password', 'placeholder': 'Password'},
         label = "Password"
     )
-	firstname = serializers.CharField(label = "First Name")
-	lastname = serializers.CharField(label = "Last Name")
+	firstname = serializers.CharField(label = "First Name",required=False)
+	lastname = serializers.CharField(label = "Last Name",required=False)
 	gender = serializers.ChoiceField(label="Gender",default='M',choices=(("M", "M"),("F", "F"),("T", "T")))
 	image = serializers.ImageField(label="Profile Picture",required=False)
 	class Meta:
@@ -199,8 +197,14 @@ class UserCreateSerializer(serializers.ModelSerializer):
 		username = validated_data['username']
 		email = validated_data['email']
 		password = validated_data['password']
-		firstname = validated_data['firstname']
-		lastname = validated_data['lastname']
+		try:
+			firstname = validated_data['firstname']
+		except:
+			firstname = ''
+		try:
+			lastname = validated_data['lastname']
+		except:
+			lastname = ''
 		gender = validated_data['gender']
 		try:
 			image = validated_data['image']
@@ -246,3 +250,20 @@ class UserLoginSerializer(serializers.ModelSerializer):
 				raise ValidationError("Incorrect Credentials.")
 			return data
 		raise ValidationError("Invalid data")
+
+
+##############################################################################################################################
+
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+	firstname = serializers.CharField(label = "First Name",required=True)
+	lastname = serializers.CharField(label = "Last Name",required=True)
+	class Meta:
+		model = Profile
+		fields = [
+			'image',
+			'gender',
+			'firstname',
+			'lastname'
+		]

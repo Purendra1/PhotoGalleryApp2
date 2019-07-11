@@ -27,6 +27,10 @@ urlpatterns = [
     path('signUp/',UserCreateAPIView.as_view(),name='viz-api-SignUp'),
     path('signIn/',UserLoginAPIView.as_view(),name='viz-api-SignIn'),
     path('signOut/',UserLogoutAPIView.as_view(),name='viz-api-SignOut'),
+    path('profile/',ProfileAPIView.as_view(),name='viz-api-profile'),
+    path('home/',LoginHomeView.as_view(),name='viz-api-home'),
+    path('userCreated/',UserCreatedView.as_view(),name='viz-api-resp'),
+    path('changePassword/',changePassword,name='viz-api-passwordChange')
 
 ]
 

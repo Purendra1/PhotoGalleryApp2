@@ -56,7 +56,7 @@ class UserAlbum(models.Model):
 	albumid = models.ForeignKey(Album,on_delete=models.CASCADE)
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,primary_key=True)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
     gender = models.CharField(max_length=1,default='M',choices=(("M", "M"),("F", "F"),("T", "T")))
     firstname = models.CharField(default='NULL',max_length=100)

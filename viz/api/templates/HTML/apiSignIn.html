@@ -1,0 +1,35 @@
+{% extends "HTML/apiBase.html" %}
+{% load static %}
+{% load rest_framework %}
+{% load crispy_forms_tags %}
+{% block content %}<div class="container">
+	<h3 style="float:right;">Don't have an Account?</h3>
+<br><br>
+<a href="{% url 'viz-showSignUp' %}"><button  style="float:right;width: 100px; height: 50px;">Sign Up</button></a>
+<!--<button onclick="showSignIn()" style="float:right;width: 100px; height: 50px;">Login</button>-->
+<br>
+<div class="cd" id="SignIn">
+<center><h2>SIGN IN</h2></center>
+
+<form class="form-horizontal" method="POST">{% csrf_token %}{% render_form serializer %}<br>
+<input style="margin-bottom: 10px;" type="submit" value="Login">
+</form>
+</div>
+</div>{% endblock content %}
+
+
+<!--<div class="cd" id="SignUp">
+<center><h2>SIGN UP</h2></center>
+<form method="POST">{% csrf_token %}
+{{ formSignUp|crispy }}<br>
+<center><input style="margin-bottom: 10px;" type="submit" value="Sign Up"></center>
+</form>-->
+<!--<form method="POST">{% csrf_token %}<center>
+<input style="margin-bottom: 10px;" type="username" name="username" placeholder="Username" required><br>
+<input style="margin-bottom: 10px;" type="email" name="email" placeholder="E-mail" required><br>
+<input style="margin-bottom: 10px;" type="password" name="password1" placeholder="Password" required><br>
+<input style="margin-bottom: 10px;" type="password" name="password2" placeholder="Confirm Password" required><br>
+<input style="margin-bottom: 10px;" type="text" name="firstname" placeholder="First Name" required><br>
+<input style="margin-bottom: 10px;" type="text" name="lastname" placeholder="Last Name" required><br>
+<input style="margin-bottom: 10px;" type="submit" value="Sign Up"></center>
+</form>-->

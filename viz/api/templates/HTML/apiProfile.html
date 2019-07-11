@@ -1,0 +1,66 @@
+{% extends "HTML/apiBase.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load rest_framework %}
+{% block content %}
+<div class="content-section">
+
+
+
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+        <div class="media-body">
+          <h2 class="account-heading">{{ user.username }}</h2>
+          <p class="text-secondary">{{ user.profile.email }}</p>
+          <p class="text-secondary">{{ user.profile.firstname }} {{ user.profile.lastname }}</p>
+        </div>
+      </div>
+	  
+	  
+	  
+	  
+      <div>
+	  <script type="text/javascript">
+	  function showHideProfileUpdate()
+	  { 
+		  var x= document.getElementById("updateProfileForm").style.display;
+		  if(x.valueOf()=="block")
+		  {
+		  document.getElementById("updateProfileForm").style.display="none";
+		  document.getElementById("profileUpdateButton").value="Update Profile";
+		  }
+		  
+		  else 
+		  {
+		  
+		  document.getElementById("updateProfileForm").style.display="block";
+		  document.getElementById("profileUpdateButton").value="Hide Update Form";
+		  }
+	  
+	  }</script>
+
+  <div style="float:right;">
+      <a href="{% url 'viz-api-passwordChange' %}"><button style="float:right;">Change Password</button></a></div>
+      	<button onclick="showHideProfileUpdate()"  value="Update Profile"><output name="bv" id="profileUpdateButton">Update Profile</output></button>
+        <a href="{% url 'viz-api-albumList' %}"><button>Albums</button></a>
+		
+      </div>
+	  <br>
+	  
+	  
+      
+      
+      <center>
+	  <form action="{% url 'viz-api-profile' %}" method="POST" class="form-horizontal" id="updateProfileForm" style="display: none" enctype="multipart/form-data">{% csrf_token %} 
+
+<div style="width:50%;margin-left: auto; margin-right: auto;color:black; background-color: rgba(255,255,255,0.5);">
+<legend style="color:black">Update Profile Info</legend>
+{% render_form serializer %}
+<br>
+<input style="margin-bottom: 10px;" type="submit" value="Update">
+</div>
+</form>
+</center>
+
+</div>
+{% endblock content %}

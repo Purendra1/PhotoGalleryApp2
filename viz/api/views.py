@@ -5,6 +5,9 @@ from rest_framework.generics import (
 		UpdateAPIView,
 		RetrieveAPIView
 	)
+from django.contrib.auth.decorators import login_required
+from django.views.generic import TemplateView
+from django.contrib.auth.forms import PasswordChangeForm
 from django.core.exceptions import ValidationError
 from rest_framework.exceptions import APIException, ParseError
 from rest_framework.permissions import (
@@ -36,7 +39,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-
+from django.shortcuts import get_object_or_404
 
 
 class AlbumListAPIView(ListAPIView):
@@ -330,35 +333,117 @@ class PhotoCreateAPIView(CreateAPIView):
 
 class UserCreateAPIView(CreateAPIView):
 	serializer_class = UserCreateSerializer
+	permission_classes = [AllowAny, ]
+	renderer_classes = (TemplateHTMLRenderer,)
+	template_name = "HTML/apiSignUp.html"
+
 	queryset = User.objects.all()
-	
+	def get(self, request):
+		serializer = self.get_serializer()
+		return Response({'serializer':serializer})
+
+	def post(self, request, *args, **kwargs):
+		serializer = self.get_serializer(data=request.data)
+		if serializer.is_valid(raise_exception=True):
+			serializer.create(serializer.data)
+			messages.success(request,f'Your Profile has been created!')
+			return redirect('viz-api-resp')
+		messages.warning('Something is wrong')
+		return redirect('viz-api-SignUp')
+
 
 class UserLoginAPIView(APIView):
 	permission_classes = [AllowAny]
 	serializer_class = UserLoginSerializer
+	renderer_classes = (TemplateHTMLRenderer,)
+	template_name = "HTML/apiSignIn.html"
+
+	def get(self, request):
+		serializer=UserLoginSerializer()
+		return Response({'serializer': serializer})
 
 	def post(self, request, *args, **kwargs):
 		data = request.data
 		serializer = UserLoginSerializer(data=data)
 		if serializer.is_valid(raise_exception=True):
+
 			new_data = serializer.data
 			username = new_data["username"]
 			user = User.objects.filter(username=username).first()
 			login(request, user)
 			token, created = Token.objects.get_or_create(user=user)
-			return Response({'token': token.key},status=HTTP_200_OK)
+			return redirect('viz-api-profile')
 		print(serializer.errors)
 		return Response(serializer.errors,status=HTTP_400_BAD_REQUEST)
 
 
 class UserLogoutAPIView(APIView):
 	authentication_classes = (TokenAuthentication, SessionAuthentication, )
-
-	def post(self, request, *args, **kwargs):
+	renderer_classes = (TemplateHTMLRenderer,)
+	template_name = "HTML/apiSignOut.html"
+	def get(self, request, *args, **kwargs):
 		try:
 			request.user.auth_token.delete()
 		except AttributeError:
-			return Response(status=HTTP_403_FORBIDDEN)
+			try:
+				ref = request.META['HTTP_REFERER']
+			except:
+				messages.warning(request,f'Unauthorized Access')
+				return Response(status=HTTP_403_FORBIDDEN)
 		logout(request)
-		return Response(status=HTTP_204_NO_CONTENT)
+		messages.success(request,f'You have been Logged Out')
+		return render(request,'HTML/apiSignOut.html')
 
+
+class LoginHomeView(TemplateView):
+	template_name = 'HTML/apiLoginHome.html'
+
+
+class UserCreatedView(TemplateView):
+	template_name = 'HTML/apiResp.html'
+
+
+########################################################################################################################
+
+
+
+class ProfileAPIView(RetrieveAPIView):
+	serializer_class = ProfileSerializer
+	authentication_classes = (TokenAuthentication, SessionAuthentication)
+	permission_classes = [IsAuthenticated, ]
+	renderer_classes = (TemplateHTMLRenderer,)
+	template_name = "HTML/apiProfile.html"
+	
+	def get(self, request):
+		user = self.request.user
+		serializer = ProfileSerializer()
+		profile = Profile.objects.filter(user=user).first()
+		return Response({'serializer':serializer})
+
+	def post(self, request, *args, **kwargs):
+		data = request.data
+		p_form = ProfileUpateForm(request.POST, request.FILES, instance=request.user.profile)
+		print(p_form)
+		if p_form.is_valid():
+		 	p_form.save()
+		 	messages.success(request, f'Your profile has been updated!')
+		 	return redirect('viz-api-profile')
+		messages.warning(request,f'Something is wrong')
+		return Response({'serializer':ProfileSerializer()})
+
+
+@login_required
+def changePassword(request):
+	if request.method == 'POST':
+		form = PasswordChangeForm(data=request.POST, user=request.user)
+
+		if form.is_valid():
+			form.save()
+			update_session_auth_hash(request, form.user)
+			return redirect(reverse('viz-api-profile'))
+		else:
+			return redirect(reverse('viz-api-passwordChange'))
+	else:
+		form = PasswordChangeForm(user=request.user)
+
+	return render(request, 'HTML/apiPasswordChange.html', {'form': form})
