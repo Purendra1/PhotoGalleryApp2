@@ -81,3 +81,9 @@ class PhotoFormInAlbumAPI(forms.ModelForm):
             self.fields['albumid'].queryset = Album.objects.filter(albumid=key)
         except:
             pass
+
+
+class PhotoUpdateFormInAlbumAPI(forms.ModelForm):
+    class Meta:
+        model=Photo
+        fields = ['description']

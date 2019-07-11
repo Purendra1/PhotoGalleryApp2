@@ -5,6 +5,8 @@ from rest_framework.generics import (
 		UpdateAPIView,
 		RetrieveAPIView
 	)
+from django.core.exceptions import ValidationError
+from rest_framework.exceptions import APIException, ParseError
 from rest_framework.permissions import (
 		AllowAny,
 		IsAuthenticated,
@@ -185,6 +187,23 @@ class PhotoDeleteAPIView(DestroyAPIView):
 	serializer_class = PhotoDetailSerializer
 	authentication_classes = (TokenAuthentication, SessionAuthentication)
 	permission_classes = [IsAuthenticated, ]
+	renderer_classes = (TemplateHTMLRenderer,)
+	template_name = "HTML/apiPhotoDelete.html"
+
+	def get(self, request, *args, **kwargs):
+		url=self.request.build_absolute_uri()
+		i = url.index('photos/')
+		i=i+7
+		key=url[i:i+36:1]
+		photo = Photo.objects.filter(photoid=key).first()
+		context={'object':photo}
+		return Response(context)
+
+	def post(self, request, *args, **kwargs):
+		instance = self.get_object()
+		self.perform_destroy(instance)
+		messages.info(request,f'Your Album has been Deleted!')
+		return redirect('viz-api-albumList')
 
 class PhotoListAPIView(ListAPIView):
 	def get_queryset(self):
@@ -192,6 +211,7 @@ class PhotoListAPIView(ListAPIView):
 	serializer_class = 	PhotoListSerializer
 	authentication_classes = (TokenAuthentication, SessionAuthentication)
 	permission_classes = [IsAuthenticated, ]
+	
 
 class PhotoDetailAPIView(RetrieveAPIView):
 	def get_queryset(self):
@@ -199,6 +219,16 @@ class PhotoDetailAPIView(RetrieveAPIView):
 	serializer_class = PhotoDetailSerializer
 	authentication_classes = (TokenAuthentication, SessionAuthentication)
 	permission_classes = [IsAuthenticated, ]
+	renderer_classes = (TemplateHTMLRenderer,)
+	template_name = "HTML/apiPhotoDetails.html"
+
+	def get(self, request, *args, **kwargs):
+		url=self.request.build_absolute_uri()
+		i = url.index('photos/')
+		i=i+7
+		key=url[i:i+36:1]
+		photo=Photo.objects.filter(photoid=key).first()
+		return Response({'photo':photo})
 
 class PhotoUpdateAPIView(UpdateAPIView):
 	def get_queryset(self):
@@ -206,7 +236,45 @@ class PhotoUpdateAPIView(UpdateAPIView):
 	serializer_class = PhotoUpdateSerializer
 	authentication_classes = (TokenAuthentication, SessionAuthentication)
 	permission_classes = [IsAuthenticated, ]
+	renderer_classes = (TemplateHTMLRenderer,)
+	model = Photo
+	template_name = 'HTML/apiPhotoCreate.html'
+	fields = ['description']
 
+	def get(self, request, *args, **kwargs):
+		url=self.request.build_absolute_uri()
+		i = url.index('photos/')
+		i=i+7
+		key=url[i:i+36:1]
+		photo = Photo.objects.filter(photoid=key).first()
+		form=PhotoUpdateFormInAlbumAPI(instance=Photo())
+		context={'form':form,'photoid':photo.photoid}
+		return Response(context)
+
+	def post(self, request, *args, **kwargs):
+		key=kwargs['pk']
+		photo = Photo.objects.filter(photoid=key).first()
+		form=self.get_serializer(data=request.data,instance=photo)
+		if form.is_valid():
+			self.perform_create(form)
+			form.save()
+			messages.success(request,f'Your Photo has been Updated!')
+			return redirect('viz-api-photoDetails',form.instance.photoid)
+		return Response(HTTP_400_BAD_REQUEST)
+
+	def form_valid(self, form):
+		form.instance.owner = self.request.user
+		return super().form_valid(form)
+
+	def test_func(self):
+		album = self.get_object()
+		if self.request.user == album.owner:
+			return True
+		return False
+
+	def perform_create(self, serializers):
+		description = self.request.data.get('description')
+		serializers.save(description=description)
 
 class PhotoCreateAPIView(CreateAPIView):
 	queryset = Photo.objects.all()
@@ -216,7 +284,6 @@ class PhotoCreateAPIView(CreateAPIView):
 	parser_classes = (MultiPartParser,FormParser, )
 	renderer_classes = (TemplateHTMLRenderer,)
 	template_name = "HTML/apiPhotoCreate.html"
-	form_class = PhotoFormInAlbum
 
 	def get_form_kwargs(self):
 		kwargs = super(PhotoCreateAPIView, self).get_form_kwargs()
@@ -240,18 +307,19 @@ class PhotoCreateAPIView(CreateAPIView):
 		i=i+7
 		key=url[i:i+36:1]
 		kwargs['albumid'] = key
-		form=PhotoFormInAlbumAPI(request.POST,request.FILES,kwargs=kwargs)
+		form=PhotoFormInAlbumAPI(kwargs=kwargs)
 		context={'form':form,'albumid':key}
 		return Response(context)
 
 	def post(self, request, *args, **kwargs):
 		kwargs=kwargs
-		form=PhotoFormInAlbumAPI(request.POST,request.FILES)
+		form=self.get_serializer(data=request.data)
 		if form.is_valid():
-			form.instance.owner = request.user
+			self.perform_create(form)
 			form.save()
 			messages.success(request,f'Your Photo has been Uploaded!')
-			return redirect('viz-api-albumDetails',form.instance.albumid)
+			return redirect('viz-api-albumDetails',form.instance.albumid.albumid)
+		return Response(HTTP_400_BAD_REQUEST)
 
 
 

@@ -2,9 +2,15 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
+{% if "update" in request.build_absolute_uri %}
+<div style="float:left;">
+  <a href="{% url 'viz-api-photoDetails' photoid %}"><button class="btn btn-back">BACK TO PHOTO</button></a>
+</div>
+{% else %}
 <div style="float:left;">
   <a href="{% url 'viz-api-albumDetails' albumid %}"><button class="btn btn-back">BACK TO ALBUM</button></a>
 </div>
+{% endif %}
 <br><br>
 <div class="container">
 {% if "update" in request.build_absolute_uri %}

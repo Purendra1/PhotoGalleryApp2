@@ -1,0 +1,12 @@
+{% extends "HTML/base.html" %}
+{% load static %}
+{% block content %}<div class="container">
+<center><h2>DELETE THIS PHOTO {{ object.title }}</h2></center>
+<form method="POST">{% csrf_token %}
+<center><h3>CONFIRM DELETE?</h3></center>
+<br>
+<center>
+  <button class="btn btn-outline-danger"  type="submit" value="confirm">CONFIRM DELETE</button>
+  <a class="btn btn-outline-secondary" href="{% url 'viz-api-photoDetails' object.photoid %}" value="CANCEL">CANCEL</a>
+</center>
+</form></div></div>{% endblock content %}
