@@ -3,7 +3,7 @@ from viz.models import *
 
 class IsOwnerOrReadOnly(BasePermission):
 	message = 'You can\'t edit someone else\'s Objects'
-	my_safe_methods = ['GET','PUT']
+	my_safe_methods = ['GET','PUT','POST']
 	def has_permission(self,request,view):
 		url=request.build_absolute_uri()
 		i=-1

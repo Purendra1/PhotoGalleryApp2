@@ -238,7 +238,7 @@ class PhotoUpdateAPIView(UpdateAPIView):
 		return Photo.objects.filter(owner=self.request.user)
 	serializer_class = PhotoUpdateSerializer
 	authentication_classes = (TokenAuthentication, SessionAuthentication)
-	permission_classes = [IsOwnerOrReadOnly, ]
+	permission_classes = [IsAuthenticated, IsOwnerOrReadOnly, ]
 	renderer_classes = (TemplateHTMLRenderer,)
 	model = Photo
 	template_name = 'HTML/apiPhotoCreate.html'
