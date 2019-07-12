@@ -133,7 +133,7 @@ class AlbumDeleteAPIView(DestroyAPIView):
 	queryset = Album.objects.all()
 	serializer_class = AlbumDetailSerializer
 	authentication_classes = (TokenAuthentication, SessionAuthentication)
-	permission_classes = [IsAuthenticated, ]
+	permission_classes = [IsOwnerOrReadOnly, ]
 	renderer_classes = (TemplateHTMLRenderer,)
 	template_name = "HTML/apiAlbumDelete.html"
 
@@ -189,7 +189,7 @@ class PhotoDeleteAPIView(DestroyAPIView):
 		return Photo.objects.filter(owner=self.request.user)
 	serializer_class = PhotoDetailSerializer
 	authentication_classes = (TokenAuthentication, SessionAuthentication)
-	permission_classes = [IsAuthenticated, ]
+	permission_classes = [IsOwnerOrReadOnly, ]
 	renderer_classes = (TemplateHTMLRenderer,)
 	template_name = "HTML/apiPhotoDelete.html"
 
@@ -238,7 +238,7 @@ class PhotoUpdateAPIView(UpdateAPIView):
 		return Photo.objects.filter(owner=self.request.user)
 	serializer_class = PhotoUpdateSerializer
 	authentication_classes = (TokenAuthentication, SessionAuthentication)
-	permission_classes = [IsAuthenticated, ]
+	permission_classes = [IsOwnerOrReadOnly, ]
 	renderer_classes = (TemplateHTMLRenderer,)
 	model = Photo
 	template_name = 'HTML/apiPhotoCreate.html'
@@ -283,7 +283,7 @@ class PhotoCreateAPIView(CreateAPIView):
 	queryset = Photo.objects.all()
 	serializer_class = PhotoCreateSerializer
 	authentication_classes = (TokenAuthentication, SessionAuthentication)
-	permission_classes = [IsAuthenticated, ]
+	permission_classes = [IsOwnerOrReadOnly, ]
 	parser_classes = (MultiPartParser,FormParser, )
 	renderer_classes = (TemplateHTMLRenderer,)
 	template_name = "HTML/apiPhotoCreate.html"

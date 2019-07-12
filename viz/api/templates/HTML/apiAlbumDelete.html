@@ -7,6 +7,6 @@
 <br>
 <center>
   <button class="btn btn-outline-danger"  type="submit" value="confirm">CONFIRM DELETE</button>
-  <a class="btn btn-outline-secondary" href="{% url 'viz-showAlbum' object.albumid %}" value="CANCEL">CANCEL</a>
+  <a class="btn btn-outline-secondary" href="{% url 'viz-api-albumDetails' object.albumid %}" value="CANCEL">CANCEL</a>
 </center>
 </form></div></div>{% endblock content %}
