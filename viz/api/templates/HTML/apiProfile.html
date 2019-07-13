@@ -12,7 +12,7 @@
         <div class="media-body">
           <h2 class="account-heading">{{ user.username }}</h2>
           <p class="text-secondary">{{ user.profile.email }}</p>
-          <p class="text-secondary">{{ user.profile.firstname }} {{ user.profile.lastname }}</p>
+          <p class="text-primary">{{ user.profile.firstname }} {{ user.profile.lastname }}</p>
         </div>
       </div>
 	  
@@ -42,7 +42,8 @@
   <div style="float:right;">
       <a href="{% url 'viz-api-passwordChange' %}"><button style="float:right;">Change Password</button></a></div>
       	<button onclick="showHideProfileUpdate()"  value="Update Profile"><output name="bv" id="profileUpdateButton">Update Profile</output></button>
-        <a href="{% url 'viz-api-albumList' %}"><button>Albums</button></a>
+        <a href="{% url 'viz-api-albumList' %}"><button>My Albums</button></a>
+        <a href="{% url 'viz-api-publicAlbumList' %}"><button>Public Albums</button></a>
 		
       </div>
 	  <br>

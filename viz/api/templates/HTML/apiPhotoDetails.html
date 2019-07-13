@@ -22,7 +22,7 @@
             <small class="text-muted">{{ photo.date_posted|date:"F d, Y g:i:s A" }}</small>
             {% if photo.share == "B" %}<medium style="color: red">SHARED PUBLICLY</medium>{% endif %}
             {% if photo.share == "U" %}<medium style="color: orange">SHARED BY URL</medium>{% endif %}
-            {% if photo.share == "P" %}<medium style="color: lightgreen">PRIVATE (UNSHARED)</medium>{% endif %}
+            {% if photo.share == "P" %}<medium style="color: green">PRIVATE (UNSHARED)</medium>{% endif %}
           </div>
           <p class="container" style="float:left;">DESCRIPTION:<br>{{ photo.description }}</p>
           <p class="article-content"><img src="{{photo.image.url}}"/></p>

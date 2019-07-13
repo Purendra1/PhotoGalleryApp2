@@ -25,7 +25,7 @@
             <small class="text-muted">{{ album.date_posted|date:"F d, Y g:i:s A" }}</small>
             {% if album.share == "B" %}<medium style="color: red">SHARED PUBLICLY</medium>{% endif %}
             {% if album.share == "U" %}<medium style="color: orange">SHARED BY URL</medium>{% endif %}
-            {% if album.share == "P" %}<medium style="color: lightgreen">PRIVATE (UNSHARED)</medium>{% endif %}
+            {% if album.share == "P" %}<medium style="color: green">PRIVATE (UNSHARED)</medium>{% endif %}
           </div>
           <h2 class="article-title"> {{ album.title }}</h2>
           <small class="text-muted">{{ album.description }}</small>
