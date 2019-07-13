@@ -55,7 +55,8 @@ class AlbumUpdateSerializer(serializers.ModelSerializer):
 		fields = [
 			'title',
 			'description',
-			'cover'
+			'cover',
+			'share'
 		]
 		
 class AlbumCreateSerializer(serializers.ModelSerializer):
@@ -64,7 +65,8 @@ class AlbumCreateSerializer(serializers.ModelSerializer):
 		fields = [
 			'title',
 			'description',
-			'cover'
+			'cover',
+			'share'
 		]
 
 	def create(self, validated_data):

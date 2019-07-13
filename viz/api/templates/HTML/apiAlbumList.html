@@ -12,19 +12,18 @@
 <br><br>
 <h1 style="color:red;">YOUR ALBUMS</h1>
 {% for albums in album %}
-		{% if albums.owner.username == user.username %}
+
         <article class="media content-section">
           <img class="rounded-circle article-img" src="{{ album.owner.profile.image.url }}"/>
           <div class="media-body">
             <div class="article-metadata">
               <a class="mr-2" href="#">{{ albums.owner }}</a>
-              <small class="text-muted">{{ albums.date_posted|date:"F d, Y" }}</small>
+              <small class="text-muted">{{ albums.date_posted|date:"F d, Y g:i:s A" }}</small>
             </div>
-            <h2 class="article-title"> <a class="article-title" href="{% url 'viz-api-albumDetails' albums.albumid %}">{{ albums.title }}</a></h2>
+            <h2 class="article-title"> <a class="article-title" href="{% url 'viz-api-albumDetails' albums.albumid %}">{{ albums.title }}</a>{% if albums.owner.username != user.username %} - PUBLIC ALBUM{% endif %}</h2>
             <p class="article-content"><img src="{{albums.cover.url}}"  height="300" width="300"/></p>
           </div>
         </article>
-        {% endif %}
     {% endfor %}
 {% endblock content %}
 

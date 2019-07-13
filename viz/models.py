@@ -14,6 +14,7 @@ class Album(models.Model):
 	date_posted = models.DateTimeField(default=timezone.now)
 	owner = models.ForeignKey(User,on_delete=models.CASCADE)
 	cover = models.ImageField(upload_to='album_covers',blank=True,default='defaultcover.jpg')
+	share = models.CharField(max_length=1,default='P',choices=(("P", "Private"),("U", "Only by URL"),("B", "Public")))
 
 	def __str__(self):
 		return f'{self.title} Album'
@@ -36,6 +37,7 @@ class Photo(models.Model):
 	albumid = models.ForeignKey(Album,on_delete=models.CASCADE)
 	owner = models.ForeignKey(User,on_delete=models.CASCADE)
 	image = models.ImageField(upload_to='photo_folder')
+	share = models.CharField(max_length=1,default='P',choices=(("P", "Private"),("U", "Only by URL"),("B", "Public")))
 
 	def __str__(self):
 		return f'{self.photoid} Photo'

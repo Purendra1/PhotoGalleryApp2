@@ -48,12 +48,30 @@ class AlbumListAPIView(ListAPIView):
 	renderer_classes = (TemplateHTMLRenderer,)
 	template_name = "HTML/apiAlbumList.html"
 	def get_queryset(self):
-		return Album.objects.filter(owner=self.request.user)
+		myAlbums = Album.objects.filter(owner=self.request.user)
+		return myAlbums
 
 	serializer_class = 	AlbumListSerializer
 
 	def get(self, request):
-		queryset = Album.objects.filter(owner=self.request.user).order_by('-date_posted')
+		myAlbums = Album.objects.filter(owner=self.request.user)
+		queryset = myAlbums
+		queryset = queryset.order_by('owner')
+		return Response({'album':queryset})
+
+class PublicAlbumListAPIView(ListAPIView):
+	authentication_classes = (TokenAuthentication, SessionAuthentication)
+	permission_classes = [IsAuthenticated, ]
+	renderer_classes = (TemplateHTMLRenderer,)
+	template_name = "HTML/apiAlbumList.html"
+	queryset = Album.objects.filter(share="B")
+
+	serializer_class = 	AlbumListSerializer
+
+	def get(self, request):
+		myAlbums = Album.objects.filter(share="B")
+		queryset = myAlbums
+		queryset = queryset.order_by('owner')
 		return Response({'album':queryset})
 
 class AlbumDetailAPIView(RetrieveAPIView):
@@ -97,7 +115,7 @@ class AlbumUpdateAPIView(LoginRequiredMixin, UserPassesTestMixin, UpdateAPIView)
 	renderer_classes = (TemplateHTMLRenderer,)
 	model = Album
 	template_name = 'HTML/apiAlbumCreate.html'
-	fields = ['title', 'description','cover']
+	fields = ['title', 'description','cover','share']
 
 	def get(self, request, *args, **kwargs):
 		url=self.request.build_absolute_uri()
@@ -242,7 +260,7 @@ class PhotoUpdateAPIView(UpdateAPIView):
 	renderer_classes = (TemplateHTMLRenderer,)
 	model = Photo
 	template_name = 'HTML/apiPhotoCreate.html'
-	fields = ['description']
+	fields = ['description','share']
 
 	def get(self, request, *args, **kwargs):
 		url=self.request.build_absolute_uri()

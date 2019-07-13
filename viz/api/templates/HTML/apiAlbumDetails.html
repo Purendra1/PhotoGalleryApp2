@@ -16,14 +16,16 @@
   <a href="{% url 'viz-api-createPhoto' album.albumid %}"><button>Add a Photo</button></a>
 </div>
 <br><br>
-	{% if album.owner.username == user.username %}
+	{% if album.owner.username == user.username or album.share == "B" or album.share == "U" %}
       <article class="media content-section">
         <img class="rounded-circle article-img" src="{{ album.cover.url }}" height="300" width="300">
         <div class="media-body">
           <div class="article-metadata">
             <a class="mr-2" href="#">{{ album.owner }}</a>
-            <small class="text-muted">{{ album.date_posted|date:"F d, Y" }}</small>
-            
+            <small class="text-muted">{{ album.date_posted|date:"F d, Y g:i:s A" }}</small>
+            {% if album.share == "B" %}<medium style="color: red">SHARED PUBLICLY</medium>{% endif %}
+            {% if album.share == "U" %}<medium style="color: orange">SHARED BY URL</medium>{% endif %}
+            {% if album.share == "P" %}<medium style="color: lightgreen">PRIVATE (UNSHARED)</medium>{% endif %}
           </div>
           <h2 class="article-title"> {{ album.title }}</h2>
           <small class="text-muted">{{ album.description }}</small>

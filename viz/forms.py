@@ -34,9 +34,11 @@ class ProfileUpateForm(forms.ModelForm):
 
 
 class AlbumCreationForm(forms.ModelForm):
-	class Meta:
-		model=Album
-		fields=['title','description','cover']
+    share = models.CharField(max_length=1,default='P',choices=(("P", "Private"),("U", "Only by URL"),("B", "Public")))
+    
+    class Meta:
+        model=Album
+        fields=['title','description','cover','share']
 
 
 
@@ -70,7 +72,7 @@ class PhotoFormInAlbum(forms.ModelForm):
 class PhotoFormInAlbumAPI(forms.ModelForm):
     class Meta:
         model=Photo
-        fields = ['description','image','albumid']
+        fields = ['description','image','albumid','share']
 
     def __init__(self, *args, **kwargs):
         try:
@@ -86,4 +88,4 @@ class PhotoFormInAlbumAPI(forms.ModelForm):
 class PhotoUpdateFormInAlbumAPI(forms.ModelForm):
     class Meta:
         model=Photo
-        fields = ['description']
+        fields = ['description','share']
