@@ -16,6 +16,7 @@ from django.views.generic import (
 urlpatterns = [
     path('albums/',AlbumListAPIView.as_view(),name='viz-api-albumList'),
     path('albums/public/',PublicAlbumListAPIView.as_view(),name='viz-api-publicAlbumList'),
+    path('photos/public/',PublicPhotoListAPIView.as_view(),name='viz-api-publicPhotoList'),
     path('photos/',PhotoListAPIView.as_view(),name='viz-api-photoList'),
     path('albums/<pk>/',AlbumDetailAPIView.as_view(),name='viz-api-albumDetails'),
     path('photos/<pk>/',PhotoDetailAPIView.as_view(),name='viz-api-photoDetails'),

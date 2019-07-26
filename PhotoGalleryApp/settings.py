@@ -14,7 +14,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+API_DIR = str(BASE_DIR) + '/viz/api/templates'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -60,7 +60,7 @@ ROOT_URLCONF = 'PhotoGalleryApp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [(BASE_DIR + '/viz/api/templates/').replace('\\','/'),],
+        'DIRS': [(API_DIR).replace('\\','/').replace('/','\\')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,7 +78,8 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(BASE_DIR, 'templates').replace('\\','/'),
-    os.path.join(BASE_DIR, '/api/templates/').replace('\\','/'),
+    os.path.join(os.path.dirname(__file__), '/api/templates').replace('\\','/'),
+    os.path.join(BASE_DIR, 'api/templates').replace('\\','/'),
 )
 
 WSGI_APPLICATION = 'PhotoGalleryApp.wsgi.application'
@@ -143,8 +144,7 @@ MEDIA_URL = '/media/'
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
-        'rest_framework.renderers.TemplateHTMLRenderer'
+        #'rest_framework.renderers.BrowsableAPIRenderer',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
