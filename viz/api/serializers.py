@@ -246,7 +246,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
 
 	def validate(self,data):
 		username = data.get("username")
-		password = data["password"]
+		password = data.get("password")
 		user = User.objects.filter(username=username).first()
 		if user is not None:
 			if not user.check_password(password):

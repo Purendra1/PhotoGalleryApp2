@@ -5,6 +5,7 @@ from rest_framework.generics import (
 		UpdateAPIView,
 		RetrieveAPIView
 	)
+from django.middleware import csrf
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.contrib.auth.forms import PasswordChangeForm
@@ -247,12 +248,11 @@ class UserLoginAPIView(APIView):
 	permission_classes = [AllowAny]
 	serializer_class = UserLoginSerializer
 	renderer_classes = (BrowsableAPIRenderer,)
-
 	def post(self, request, *args, **kwargs):
 		data = request.data
+		print(data)
 		serializer = UserLoginSerializer(data=data)
 		if serializer.is_valid(raise_exception=True):
-
 			new_data = serializer.data
 			username = new_data["username"]
 			user = User.objects.filter(username=username).first()
@@ -334,3 +334,12 @@ def changePassword(request):
 		form = PasswordChangeForm(user=request.user)
 
 	return render(request, 'HTML/apiPasswordChange.html', {'form': form})
+
+
+########################################################################################################################
+
+
+class GetCSRFTokenAPIView(APIView):
+	def get(self, request):
+		data = {'csrfToken':csrf.get_token(request)}
+		return Response(data)

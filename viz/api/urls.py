@@ -32,7 +32,8 @@ urlpatterns = [
     path('profile/',ProfileAPIView.as_view(),name='viz-api-profile'),
     path('home/',LoginHomeView.as_view(),name='viz-api-home'),
     path('userCreated/',UserCreatedView.as_view(),name='viz-api-resp'),
-    path('changePassword/',changePassword,name='viz-api-passwordChange')
+    path('changePassword/',changePassword,name='viz-api-passwordChange'),
+    path('getCSRFToken/',GetCSRFTokenAPIView.as_view(),name='viz-api-getCSRFToken')
 
 ]
 
