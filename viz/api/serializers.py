@@ -262,11 +262,14 @@ class UserLoginSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
 	firstname = serializers.CharField(label = "First Name",required=True)
 	lastname = serializers.CharField(label = "Last Name",required=True)
+	username = serializers.CharField(source='user')
 	class Meta:
 		model = Profile
 		fields = [
 			'image',
 			'gender',
 			'firstname',
-			'lastname'
+			'lastname',
+			'username',
+			'email'
 		]

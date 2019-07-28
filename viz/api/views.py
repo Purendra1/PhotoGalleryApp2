@@ -247,10 +247,8 @@ class UserCreateAPIView(CreateAPIView):
 class UserLoginAPIView(APIView):
 	permission_classes = [AllowAny]
 	serializer_class = UserLoginSerializer
-	renderer_classes = (BrowsableAPIRenderer,)
 	def post(self, request, *args, **kwargs):
 		data = request.data
-		print(data)
 		serializer = UserLoginSerializer(data=data)
 		if serializer.is_valid(raise_exception=True):
 			new_data = serializer.data
@@ -258,7 +256,6 @@ class UserLoginAPIView(APIView):
 			user = User.objects.filter(username=username).first()
 			login(request, user)
 			token, created = Token.objects.get_or_create(user=user)
-			serializer.data['token']=token
 			return Response(serializer.data,status=HTTP_200_OK)
 		print(serializer.errors)
 		return Response(serializer.errors,status=HTTP_400_BAD_REQUEST)
@@ -298,14 +295,17 @@ class ProfileAPIView(RetrieveAPIView):
 	serializer_class = ProfileSerializer
 	authentication_classes = (TokenAuthentication, SessionAuthentication)
 	permission_classes = [IsAuthenticated, ]
-	renderer_classes = (TemplateHTMLRenderer,)
-	template_name = "HTML/apiProfile.html"
 	
 	def get(self, request):
-		user = self.request.user
-		serializer = ProfileSerializer()
+		authToken = request.headers["Authorization"]
+		authToken = authToken[7::]
+		username = Token.objects.filter(key=authToken).first().user
+		user=User.objects.filter(username=username).first()
+		print(user)
 		profile = Profile.objects.filter(user=user).first()
-		return Response({'serializer':serializer})
+		serializer = ProfileSerializer(profile)
+		print(serializer.data)
+		return Response(serializer.data)
 
 	def post(self, request, *args, **kwargs):
 		data = request.data

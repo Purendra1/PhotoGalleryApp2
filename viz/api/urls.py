@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView
+from rest_framework.authtoken.views import obtain_auth_token
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import *
@@ -33,7 +34,8 @@ urlpatterns = [
     path('home/',LoginHomeView.as_view(),name='viz-api-home'),
     path('userCreated/',UserCreatedView.as_view(),name='viz-api-resp'),
     path('changePassword/',changePassword,name='viz-api-passwordChange'),
-    path('getCSRFToken/',GetCSRFTokenAPIView.as_view(),name='viz-api-getCSRFToken')
+    path('getCSRFToken/',GetCSRFTokenAPIView.as_view(),name='viz-api-getCSRFToken'),
+    path('getAuthToken/', obtain_auth_token, name='viz-api-getAuthToken'), 
 
 ]
 
