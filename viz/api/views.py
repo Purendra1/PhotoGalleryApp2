@@ -5,6 +5,7 @@ from rest_framework.generics import (
 		UpdateAPIView,
 		RetrieveAPIView
 	)
+from django.http import HttpResponse
 from django.middleware import csrf
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
@@ -226,22 +227,22 @@ class PhotoCreateAPIView(CreateAPIView):
 class UserCreateAPIView(CreateAPIView):
 	serializer_class = UserCreateSerializer
 	permission_classes = [AllowAny, ]
-	renderer_classes = (TemplateHTMLRenderer,)
-	template_name = "HTML/apiSignUp.html"
 
 	queryset = User.objects.all()
-	def get(self, request):
-		serializer = self.get_serializer()
-		return Response({'serializer':serializer})
+
+	def get(self,request):
+		form = UserRegisterForm()
+		return HttpResponse(form.as_p())
 
 	def post(self, request, *args, **kwargs):
 		serializer = self.get_serializer(data=request.data)
+		print(request.data)
 		if serializer.is_valid(raise_exception=True):
 			serializer.create(serializer.data)
 			messages.success(request,f'Your Profile has been created!')
-			return redirect('viz-api-resp')
+			return Response(status=HTTP_201_CREATED)
 		messages.warning('Something is wrong')
-		return redirect('viz-api-SignUp')
+		return Response(status=HTTP_400_BAD_REQUEST)
 
 
 class UserLoginAPIView(APIView):

@@ -155,7 +155,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
         style={'input_type': 'password', 'placeholder': 'Password'},
         label = "Confirm Password"
     )
-	password = serializers.CharField(
+	password1 = serializers.CharField(
         required=True,
         style={'input_type': 'password', 'placeholder': 'Password'},
         label = "Password"
@@ -164,11 +164,12 @@ class UserCreateSerializer(serializers.ModelSerializer):
 	lastname = serializers.CharField(label = "Last Name",required=False)
 	gender = serializers.ChoiceField(label="Gender",default='M',choices=(("M", "M"),("F", "F"),("T", "T")))
 	image = serializers.ImageField(label="Profile Picture",required=False)
+	email = serializers.EmailField(label="E-Mail",required=True)
 	class Meta:
 		model = User
 		fields = [
 		'username',
-		'password',
+		'password1',
 		'password2',
 		'email',
 		'firstname',
@@ -190,16 +191,19 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 	def validate_password2(self,value):
 		data = self.get_initial()
-		password1 = data.get("password")
+		password1 = data.get("password1")
 		password2 = value
+		print("something something meri jaan")
 		if password1 != password2:
 			raise ValidationError("Passwords do not match")
 		return value
 
 	def create(self, validated_data):
+		print(validated_data)
+		print(self.get_initial())
 		username = validated_data['username']
 		email = validated_data['email']
-		password = validated_data['password']
+		password = validated_data['password1']
 		try:
 			firstname = validated_data['firstname']
 		except:
@@ -210,12 +214,14 @@ class UserCreateSerializer(serializers.ModelSerializer):
 			lastname = ''
 		gender = validated_data['gender']
 		try:
-			image = validated_data['image']
+			data=self.get_initial()
+			image = data.get("image")
 		except:
 			image = None
 		user = User(username = username,email=email)
 		user.set_password(password)
 		user.save()
+
 		if image is not None:
 			prof = Profile.objects.create(user=user,email=email,firstname=firstname,lastname=lastname,gender=gender,image=image)
 		else:
