@@ -25,6 +25,9 @@ Software Requirements to run:
 
 	pip install djangorestframework
 
+-django-cors-headers
+
+	pip install django-cors-headers
 
 To run, goto the main directory and run the following command:
 
